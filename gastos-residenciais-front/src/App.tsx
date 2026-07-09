@@ -55,7 +55,6 @@ function App() {
   // Equivalente ao componentDidMount das Class Components.
   useEffect(() => {
     setCarregando(true);
-
     setErro(null);
     Promise.all([carregarPessoas(), carregarTransacoes()])
       .catch((err) =>

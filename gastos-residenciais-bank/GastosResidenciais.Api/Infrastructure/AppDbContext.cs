@@ -74,7 +74,7 @@ public class AppDbContext : DbContext
 
             // Precisão explícita para valores monetários — sem isso o Postgres
             // pode usar um numeric sem escala definida, gerando warning do EF.
-            entity.Property(t => t.Valor).HasColumnType("decimal(18,2)");
+            entity.Property(t => t.Valor).HasColumnType("numeric(18,2)");
 
             // Salva o enum como texto ('Receita'/'Despesa') em vez de inteiro,
             // deixando a tabela legível direto no psql.
