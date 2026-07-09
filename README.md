@@ -40,9 +40,7 @@ Sistema para gerenciamento de gastos residenciais desenvolvido para praticar con
 - Vite
 
 ---
-
-
----
+ 
 
 ##  Executando o Projeto
 
