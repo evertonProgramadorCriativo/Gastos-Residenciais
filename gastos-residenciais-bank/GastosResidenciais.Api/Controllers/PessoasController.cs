@@ -111,7 +111,24 @@ public class PessoasController : ControllerBase
         // Se encontrou, converte a entidade para DTO e retorna HTTP 200 OK.
         return Ok(pessoa.ParaDto());
     }
+    /// <summary>Lista as transações de uma pessoa específica.</summary>
+    [HttpGet("{pessoaId:guid}/transacoes")]
+    public async Task<ActionResult<IEnumerable<TransacaoRespostaDto>>> ListarTransacoesDaPessoa(Guid pessoaId)
+    {
+        var pessoaExiste = await _context.Pessoas.AnyAsync(p => p.Id == pessoaId);
 
+        if (!pessoaExiste)
+        {
+            return NotFound(new { mensagem = "Pessoa não encontrada." });
+        }
+
+        var transacoes = await _context.Transacoes
+            .Where(t => t.PessoaId == pessoaId)
+            .Select(t => t.ParaDto())
+            .ToListAsync();
+
+        return Ok(transacoes);
+    }
     /// <summary>
     /// Remove uma pessoa.
     /// Futuramente, se houver transações associadas, elas poderão ser removidas

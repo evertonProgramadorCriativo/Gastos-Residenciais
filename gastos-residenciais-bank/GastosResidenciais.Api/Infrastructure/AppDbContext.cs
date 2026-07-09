@@ -32,6 +32,9 @@ public class AppDbContext : DbContext
     // _context.Pessoas.Add(novaPessoa);
     // var lista = _context.Pessoas.ToList();
     public DbSet<Pessoa> Pessoas => Set<Pessoa>();
+    // Representa a tabela "Transacoes" no banco de dados.
+    // Com esse DbSet você consegue consultar, adicionar, editar e remover transações.
+    public DbSet<Transacao> Transacoes => Set<Transacao>();
 
     // Método chamado pelo EF Core para configurar o mapeamento das entidades.
     // Aqui você define regras como:
@@ -53,6 +56,36 @@ public class AppDbContext : DbContext
             // Configura a propriedade Idade.
             // IsRequired() => campo obrigatório (não pode ser nulo).
             entity.Property(p => p.Idade).IsRequired();
+        });
+        // servem para configurar o mapeamento das entidades. 
+        // Aqui você define regras como: 
+        // - campos obrigatórios 
+        // - tamanho máximo de texto
+        // - nomes de tabelas/colunas
+        // - relacionamentos entre entidades
+        // Configura a entidade Transacao.
+        // O EF vai aplicar essas regras ao criar ou interpretar a tabela correspondente.
+        modelBuilder.Entity<Transacao>(entity =>
+        {
+            // Configura a propriedade Descricao da entidade Transacao.
+            // IsRequired() => campo obrigatório (NOT NULL no banco).
+            // HasMaxLength(200) => limita o tamanho do texto a 200 caracteres.
+            entity.Property(t => t.Descricao).IsRequired().HasMaxLength(200);
+
+            // Precisão explícita para valores monetários — sem isso o Postgres
+            // pode usar um numeric sem escala definida, gerando warning do EF.
+            entity.Property(t => t.Valor).HasColumnType("decimal(18,2)");
+
+            // Salva o enum como texto ('Receita'/'Despesa') em vez de inteiro,
+            // deixando a tabela legível direto no psql.
+            entity.Property(t => t.Tipo).HasConversion<string>();
+            // Configura o relacionamento entre Transacao e Pessoa.
+            // Uma transação pertence a uma pessoa (PessoaId é a FK).
+            // OnDelete(DeleteBehavior.Cascade) => ao excluir uma pessoa, exclua também as transações associadas.
+            entity.HasOne(t => t.Pessoa)
+                  .WithMany()
+                  .HasForeignKey(t => t.PessoaId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
