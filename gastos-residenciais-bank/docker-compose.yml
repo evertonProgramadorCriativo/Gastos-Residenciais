@@ -1,0 +1,160 @@
+services:
+  # Serviço do banco de dados PostgreSQL
+
+  db:
+    # Define qual imagem será utilizada.
+    # postgres:16-alpine significa:
+    #
+    # postgres -> banco PostgreSQL oficial
+    # 16       -> versão do PostgreSQL
+    # alpine   -> distribuição Linux extremamente leve
+    image: postgres:16-alpine
+
+    # Define um nome fixo para o container.
+    # Sem isso o Docker criaria algo parecido com:
+    # projeto-db-1
+    container_name: gastos-residenciais-db
+
+    # Configura o comportamento de reinicialização.
+    #
+    # unless-stopped significa:
+    # - reinicia automaticamente se ocorrer erro;
+    # - reinicia após reboot do computador;
+    # - não reinicia se você parar manualmente.
+    restart: unless-stopped
+
+    # Variáveis de ambiente utilizadas pela imagem do PostgreSQL.
+    environment:
+      # Usuário administrador criado automaticamente.
+      POSTGRES_USER: gastos_user
+
+      # Senha do usuário administrador.
+      POSTGRES_PASSWORD: gastos_pass
+
+      # Banco criado automaticamente na inicialização.
+      POSTGRES_DB: gastos_residenciais
+
+    # Mapeamento de portas.
+    #
+    # formato:
+    # porta_maquina:porta_container
+    #
+    # Isso significa:
+    # localhost:5432 -> container:5432
+    ports:
+      - "5432:5432"
+
+    # Volumes persistentes.
+    #
+    # Tudo que estiver dentro dessa pasta do container
+    # será salvo permanentemente no volume Docker.
+    #
+    # Sem isso, ao apagar o container todos os dados seriam perdidos.
+    volumes:
+      # volume_docker : pasta_interna_do_container
+      - pgdata:/var/lib/postgresql/data
+
+    # Verificação automática de saúde do banco.
+    #
+    # O Docker executará periodicamente esse comando
+    # para verificar se o PostgreSQL realmente está pronto.
+    healthcheck:
+      # Executa o comando pg_isready dentro do container.
+      #
+      # -U -> usuário
+      # -d -> banco de dados
+      test: ["CMD-SHELL", "pg_isready -U gastos_user -d gastos_residenciais"]
+
+      # Intervalo entre cada teste.
+      interval: 5s
+
+      # Tempo máximo de espera antes do teste falhar.
+      timeout: 5s
+
+      # Quantidade de falhas permitidas antes do serviço
+      # ser considerado unhealthy.
+      retries: 5
+
+  # Serviço da API ASP.NET Core
+
+  api:
+    # Configuração da construção da imagem.
+    build:
+      # Define a pasta usada como contexto do build.
+      #
+      # "." significa:
+      # utilizar a pasta atual como raiz.
+      context: .
+
+      # Define qual Dockerfile será utilizado.
+      dockerfile: Dockerfile
+
+    # Nome fixo do container da API.
+    container_name: gastos-residenciais-api
+
+    # Mesmo comportamento do banco:
+    # reinicia automaticamente em falhas.
+    restart: unless-stopped
+
+    # Mapeamento de portas da API.
+    #
+    # localhost:8080 -> container:8080
+    ports:
+      - "8080:8080"
+
+    # Variáveis de ambiente da aplicação ASP.NET.
+    environment:
+      # Define o ambiente atual da aplicação.
+      #
+      # Possíveis valores:
+      #
+      # Development
+      # Staging
+      # Production
+      #
+      # Em Development o Swagger é habilitado.
+      ASPNETCORE_ENVIRONMENT: Development
+
+      # Sobrescreve a Connection String do appsettings.json.
+      #
+      # O ASP.NET converte automaticamente:
+      #
+      # ConnectionStrings__DefaultConnection
+      #
+      # em:
+      #
+      # ConnectionStrings:DefaultConnection
+      #
+      # Observe que o Host é "db"
+      # e não localhost.
+      #
+      # Isso ocorre porque dentro da rede Docker
+      # os containers se comunicam pelo nome do serviço.
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=gastos_residenciais;Username=gastos_user;Password=gastos_pass"
+
+    # Define dependências entre containers.
+    depends_on:
+      # A API depende do banco.
+      db:
+        # A API só iniciará quando o banco
+        # estiver saudável segundo o healthcheck.
+        #
+        # Isso evita erros como:
+        #
+        # connection refused
+        # database unavailable
+        condition: service_healthy
+
+# Volumes Docker persistentes
+
+volumes:
+  # Nome lógico do volume utilizado pelo PostgreSQL.
+  pgdata:
+    # Nome físico do volume criado no Docker.
+    #
+    # Sem isso o Docker criaria algo como:
+    # projeto_pgdata
+    #
+    # Com isso teremos um nome previsível:
+    # gastos-residenciais-pgdata
+    name: gastos-residenciais-pgdata
