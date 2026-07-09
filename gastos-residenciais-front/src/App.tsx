@@ -7,9 +7,12 @@ import { pessoasService } from "./services/pessoasService";
 
 // Importa os serviços responsáveis pelas chamadas da API relacionadas às transações.
 import { transacoesService } from "./services/transacoesService";
+import { totaisService } from "./services/totaisService";
 
 // Importa o componente responsável pelo formulário de cadastro.
 import { FormularioPessoa } from "./components/FormularioPessoa";
+
+import { DashboardTotais } from "./components/DashboardTotais";
 
 // Importa o componente responsável pela listagem das pessoas.
 import { ListaPessoas } from "./components/ListaPessoas";
@@ -18,8 +21,8 @@ import { ListaTransacoes } from "./components/ListaTransacoes";
 // Importa os tipos utilizados no componente.
 import type { Pessoa, CriarPessoaInput } from "./types/pessoa";
 import type { Transacao, CriarTransacaoInput } from "./types/transacao";
-
-type Aba = "pessoas" | "transacoes";
+import type { RelatorioTotais } from "./types/totais";
+type Aba = "pessoas" | "transacoes" | "totais";
 
 // Componente principal da aplicação.
 function App() {
@@ -30,6 +33,7 @@ function App() {
   // Estado que informa se os dados estão sendo carregados.
 
   const [transacoes, setTransacoes] = useState<Transacao[]>([]);
+  const [totais, setTotais] = useState<RelatorioTotais | null>(null);
   const [filtroPessoaId, setFiltroPessoaId] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
@@ -49,43 +53,52 @@ function App() {
       : await transacoesService.listar();
     setTransacoes(dados);
   }, [filtroPessoaId]);
-
-  // Executa quando o componente é montado pela primeira vez.
-  //
-  // Equivalente ao componentDidMount das Class Components.
-  useEffect(() => {
+  const carregarTotais = useCallback(async () => {
+    const dados = await totaisService.obter();
+    setTotais(dados);
+  }, []);
+  const carregarTudo = useCallback(async () => {
     setCarregando(true);
     setErro(null);
-    Promise.all([carregarPessoas(), carregarTransacoes()])
-      .catch((err) =>
-        setErro(err instanceof Error ? err.message : "Erro ao carregar dados."),
-      )
-      .finally(() => setCarregando(false));
-  }, [carregarPessoas, carregarTransacoes]);
+    try {
+      await Promise.all([
+        carregarPessoas(),
+        carregarTransacoes(),
+        carregarTotais(),
+      ]);
+    } catch (err) {
+      setErro(err instanceof Error ? err.message : "Erro ao carregar dados.");
+    } finally {
+      setCarregando(false);
+    }
+  }, [carregarPessoas, carregarTransacoes, carregarTotais]);
+
+  useEffect(() => {
+    carregarTudo();
+  }, [carregarTudo]);
 
   const handleCriarPessoa = async (dados: CriarPessoaInput) => {
-    // Envia os dados para a API.
     await pessoasService.criar(dados);
-
-    // Recarrega a lista para exibir a nova pessoa cadastrada.
-    await carregarPessoas();
+    await Promise.all([carregarPessoas(), carregarTotais()]);
   };
 
-  // Função responsável por excluir uma pessoa.
   const handleDeletarPessoa = async (id: string) => {
-    // Remove a pessoa da API.
     await pessoasService.deletar(id);
-    await carregarPessoas();
-    await carregarTransacoes(); // reflete o cascade delete na lista de transações
+    await Promise.all([
+      carregarPessoas(),
+      carregarTransacoes(),
+      carregarTotais(),
+    ]);
   };
-  // Atualiza a lista após a exclusão.
+
   const handleCriarTransacao = async (dados: CriarTransacaoInput) => {
     await transacoesService.criar(dados);
-    await carregarTransacoes();
+    await Promise.all([carregarTransacoes(), carregarTotais()]);
   };
+
   const handleDeletarTransacao = async (id: string) => {
     await transacoesService.deletar(id);
-    await carregarTransacoes();
+    await Promise.all([carregarTransacoes(), carregarTotais()]);
   };
   // JSX responsável pela interface da aplicação.
   return (
@@ -104,6 +117,9 @@ function App() {
           disabled={aba === "transacoes"}
         >
           Transações
+        </button>
+        <button onClick={() => setAba("totais")} disabled={aba === "totais"}>
+          Totais
         </button>
       </nav>
 
@@ -133,6 +149,9 @@ function App() {
             onDeletar={handleDeletarTransacao}
           />
         </>
+      )}
+      {!carregando && aba === "totais" && totais && (
+        <DashboardTotais relatorio={totais} />
       )}
     </div>
   );
