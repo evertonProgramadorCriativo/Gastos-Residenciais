@@ -2,6 +2,8 @@
 // Exemplo: CriarPessoaDto e PessoaRespostaDto.
 using GastosResidenciais.Api.DTOs;
 
+using Microsoft.AspNetCore.Authorization;
+
 // Importa o AppDbContext, que é a classe responsável por acessar o banco de dados.
 using GastosResidenciais.Api.Infrastructure;
 
@@ -31,6 +33,7 @@ namespace GastosResidenciais.Api.Controllers;
 // GET    /pessoas/{id}
 // DELETE /pessoas/{id}
 [Route("pessoas")]
+[Authorize]
 public class PessoasController : ControllerBase
 {
     // Campo privado que guarda a instância do contexto do banco.

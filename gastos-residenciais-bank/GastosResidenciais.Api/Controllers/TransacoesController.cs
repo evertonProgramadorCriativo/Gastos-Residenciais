@@ -2,11 +2,13 @@ using GastosResidenciais.Api.DTOs;
 using GastosResidenciais.Api.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GastosResidenciais.Api.Controllers;
 
 [ApiController]
 [Route("transacoes")]
+[Authorize]
 public class TransacoesController : ControllerBase
 {
     private readonly AppDbContext _context;

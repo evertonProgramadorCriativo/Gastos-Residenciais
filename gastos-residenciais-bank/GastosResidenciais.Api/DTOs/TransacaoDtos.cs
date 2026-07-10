@@ -1,8 +1,8 @@
 // Importa atributos de validação do .NET.
- 
+
 // Esses atributos são utilizados para validar automaticamente
 // os dados recebidos pela API antes mesmo do Controller executar.
- 
+
 // Exemplos:
 // [Required]
 // [Range]
@@ -56,9 +56,9 @@ public class CriarTransacaoDto
 
     // <summary>
     // Valor financeiro da transação.
-    
+
     // [Range] garante que o valor seja maior que zero.
-     
+
     // Não faz sentido existir uma transação com valor
     // igual a zero ou negativo.
     // </summary>
@@ -71,29 +71,32 @@ public class CriarTransacaoDto
 
     // <summary>
     // Tipo da transação:
-    
+
     // Receita = 0
     // Despesa = 1
-   
+
     // O atributo [Required] indica que esse campo
     // precisa ser informado.
     // </summary>
     [Required]
     public TipoTransacao Tipo { get; set; }
 
+    [Required]
+    public CategoriaTransacao Categoria { get; set; }
+
     // <summary>
     // Data da transação.
-     
+
     // Caso o cliente não envie uma data,
     // será utilizada a data atual em UTC.
-     
+
     // UTC evita problemas com fusos horários.
     // </summary>
     public DateTime Data { get; set; } = DateTime.UtcNow;
 
     // <summary>
     // ID da pessoa responsável pela transação.
-     
+
     // Esse campo cria a relação entre
     // Pessoa e Transação.
     // </summary>
@@ -104,7 +107,7 @@ public class CriarTransacaoDto
 // <summary>
 // DTO utilizado para devolver os dados da transação
 // para o cliente.
- 
+
 // Diferente do DTO de criação,
 // este contém o ID gerado pelo banco.
 // </summary>
@@ -129,6 +132,7 @@ public class TransacaoRespostaDto
     // Tipo da transação.
     // </summary>
     public TipoTransacao Tipo { get; set; }
+    public CategoriaTransacao Categoria { get; set; }
 
     // <summary>
     // Data da transação.
@@ -144,7 +148,7 @@ public class TransacaoRespostaDto
 // <summary>
 // Classe estática responsável pelas conversões
 // entre DTOs e Entidades.
- 
+
 // Esse padrão é chamado de Mapping.
 // </summary>
 public static class TransacaoMappingExtensions
@@ -152,9 +156,9 @@ public static class TransacaoMappingExtensions
     // <summary>
     // Método de extensão responsável por converter
     // CriarTransacaoDto em uma entidade Transacao.
-     
+
     // Exemplo:
-     
+
     // var entidade = dto.ParaEntidade();
     // </summary>
     public static Transacao ParaEntidade(
@@ -166,6 +170,7 @@ public static class TransacaoMappingExtensions
             Descricao = dto.Descricao,
             Valor = dto.Valor,
             Tipo = dto.Tipo,
+            Categoria = dto.Categoria,
             Data = dto.Data,
             PessoaId = dto.PessoaId
         };
@@ -173,9 +178,9 @@ public static class TransacaoMappingExtensions
     // <summary>
     // Método responsável por converter uma entidade
     // Transacao em um DTO de resposta.
-     
+
     // Exemplo:
-     
+
     // var resposta = transacao.ParaDto();
     // </summary>
     public static TransacaoRespostaDto ParaDto(
@@ -188,6 +193,7 @@ public static class TransacaoMappingExtensions
             Descricao = transacao.Descricao,
             Valor = transacao.Valor,
             Tipo = transacao.Tipo,
+            Categoria = transacao.Categoria,
             Data = transacao.Data,
             PessoaId = transacao.PessoaId
         };

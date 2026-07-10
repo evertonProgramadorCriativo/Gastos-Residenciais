@@ -68,6 +68,8 @@ public class Transacao
     // ou subtraído do saldo.
     // </summary>
     public TipoTransacao Tipo { get; set; }
+    //  Esse campo determina a categoria da transação.
+    public CategoriaTransacao Categoria { get; set; } = CategoriaTransacao.Outros;
 
     // <summary>
     // Data em que a transação ocorreu.

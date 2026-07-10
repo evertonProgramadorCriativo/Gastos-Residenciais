@@ -4,7 +4,7 @@ using System.Text;
 
 // Importa o AppDbContext e o JwtTokenGenerator da camada Infrastructure.
 using GastosResidenciais.Api.Infrastructure;
-
+using Microsoft.AspNetCore.Authorization;
 // Contém as classes necessárias para autenticação JWT.
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 

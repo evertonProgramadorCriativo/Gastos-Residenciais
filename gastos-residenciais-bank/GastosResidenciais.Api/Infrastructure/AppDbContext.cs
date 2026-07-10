@@ -84,6 +84,12 @@ public class AppDbContext : DbContext
             // Configura o relacionamento entre Transacao e Pessoa.
             // Uma transação pertence a uma pessoa (PessoaId é a FK).
             // OnDelete(DeleteBehavior.Cascade) => ao excluir uma pessoa, exclua também as transações associadas.
+            // Mesma estratégia do Tipo: salva como texto legível no banco,
+            // e define um valor padrão para linhas que já existiam antes
+            // desta coluna existir (migration não quebra dados antigos).
+            entity.Property(t => t.Categoria)
+                  .HasConversion<string>()
+                  .HasDefaultValue(CategoriaTransacao.Outros);
             entity.HasOne(t => t.Pessoa)
                   .WithMany()
                   .HasForeignKey(t => t.PessoaId)
