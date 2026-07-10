@@ -1,4 +1,3 @@
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import type { Transacao } from "../../types/transacao";
 import { CATEGORIA_LABEL, CATEGORIA_COR } from "../../lib/categorias";
 import { formatarMoeda } from "../../lib/formato";
@@ -8,8 +7,6 @@ interface GraficoPorCategoriaProps {
 }
 
 export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
-  // Agrupa só as despesas por categoria — receitas não fazem sentido
-  // nesse gráfico (ele mostra "onde o dinheiro está indo").
   const totaisPorCategoria = transacoes
     .filter((t) => t.tipo === "Despesa")
     .reduce<Record<string, number>>((acc, t) => {
@@ -23,8 +20,24 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
       label:
         CATEGORIA_LABEL[categoria as keyof typeof CATEGORIA_LABEL] ?? categoria,
       valor,
+      cor: CATEGORIA_COR[categoria as keyof typeof CATEGORIA_COR] ?? "#94a3b8",
     }),
   );
+
+  const total = dadosGrafico.reduce((soma, item) => soma + item.valor, 0);
+
+  // Monta o conic-gradient acumulando os percentuais de cada fatia
+  let acumulado = 0;
+  const fatias = dadosGrafico.map((item) => {
+    const percentual = total > 0 ? (item.valor / total) * 100 : 0;
+    const inicio = acumulado;
+    const fim = acumulado + percentual;
+    acumulado = fim;
+    return `${item.cor} ${inicio}% ${fim}%`;
+  });
+
+  const gradiente =
+    fatias.length > 0 ? `conic-gradient(${fatias.join(", ")})` : "transparent";
 
   return (
     <div
@@ -54,30 +67,48 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
         </p>
       ) : (
         <>
-          <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
-              <Pie
-                data={dadosGrafico}
-                dataKey="valor"
-                nameKey="label"
-                innerRadius={55}
-                outerRadius={85}
-                paddingAngle={2}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 200,
+            }}
+          >
+            <div
+              title="Distribuição por categoria"
+              style={{
+                width: 170,
+                height: 170,
+                borderRadius: "50%",
+                background: gradiente,
+                position: "relative",
+              }}
+            >
+              {/* Furo do donut */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 100,
+                  height: 100,
+                  borderRadius: "50%",
+                  backgroundColor: "var(--cor-card-fundo)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 12,
+                  color: "var(--cor-texto-secundario)",
+                  textAlign: "center",
+                  padding: 8,
+                }}
               >
-                {dadosGrafico.map((entry) => (
-                  <Cell
-                    key={entry.categoria}
-                    fill={
-                      CATEGORIA_COR[
-                        entry.categoria as keyof typeof CATEGORIA_COR
-                      ] ?? "#94a3b8"
-                    }
-                  />
-                ))}
-              </Pie>
-              <Tooltip formatter={(valor: number) => formatarMoeda(valor)} />
-            </PieChart>
-          </ResponsiveContainer>
+                {formatarMoeda(total)}
+              </div>
+            </div>
+          </div>
 
           <div
             style={{
@@ -102,10 +133,7 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
                     width: 10,
                     height: 10,
                     borderRadius: "50%",
-                    backgroundColor:
-                      CATEGORIA_COR[
-                        item.categoria as keyof typeof CATEGORIA_COR
-                      ] ?? "#94a3b8",
+                    backgroundColor: item.cor,
                   }}
                 />
                 <span style={{ flex: 1 }}>{item.label}</span>

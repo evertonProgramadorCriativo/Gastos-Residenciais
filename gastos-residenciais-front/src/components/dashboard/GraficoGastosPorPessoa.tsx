@@ -1,23 +1,23 @@
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 import type { TotalPorPessoa } from "../../types/totais";
 
 interface GraficoGastosPorPessoaProps {
   dados: TotalPorPessoa[];
 }
 
+const formatarMoedaCompacta = (valor: number) =>
+  valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    maximumFractionDigits: 0,
+  });
+
 export function GraficoGastosPorPessoa({ dados }: GraficoGastosPorPessoaProps) {
   const dadosGrafico = dados.map((p) => ({
     nome: p.nome.split(" ")[0], // só o primeiro nome, pra caber no eixo X
     despesas: p.totalDespesas,
   }));
+
+  const maiorValor = Math.max(...dadosGrafico.map((d) => d.despesas), 0);
 
   return (
     <div
@@ -46,30 +46,53 @@ export function GraficoGastosPorPessoa({ dados }: GraficoGastosPorPessoaProps) {
           Sem dados ainda.
         </p>
       ) : (
-        <ResponsiveContainer width="100%" height={260}>
-          <BarChart data={dadosGrafico}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              vertical={false}
-              stroke="var(--cor-borda)"
-            />
-            <XAxis dataKey="nome" fontSize={12} />
-            <YAxis fontSize={12} />
-            <Tooltip
-              formatter={(valor: number) =>
-                valor.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })
-              }
-            />
-            <Bar
-              dataKey="despesas"
-              fill="var(--cor-primaria)"
-              radius={[6, 6, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            gap: 16,
+            height: 260,
+            padding: "0 8px",
+          }}
+        >
+          {dadosGrafico.map((item) => {
+            const alturaPercentual =
+              maiorValor > 0 ? (item.despesas / maiorValor) * 100 : 0;
+
+            return (
+              <div
+                key={item.nome}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  height: "100%",
+                  gap: 6,
+                }}
+              >
+                <span
+                  style={{ fontSize: 11, color: "var(--cor-texto-secundario)" }}
+                >
+                  {formatarMoedaCompacta(item.despesas)}
+                </span>
+                <div
+                  title={formatarMoedaCompacta(item.despesas)}
+                  style={{
+                    width: "100%",
+                    maxWidth: 48,
+                    height: `${Math.max(alturaPercentual, 2)}%`,
+                    backgroundColor: "var(--cor-primaria)",
+                    borderRadius: "6px 6px 0 0",
+                    transition: "height 0.3s ease",
+                  }}
+                />
+                <span style={{ fontSize: 12, marginTop: 4 }}>{item.nome}</span>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );

@@ -5,7 +5,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import "./styles/theme.css";
 import { AppLayout } from "./components/layout/AppLayout";
 import { DashboardPage } from "./pages/DashboardPage";
-import { PessoasPage } from "./pages/PessoasPage";
+import { PessoasPage } from "./components/pessoas/PessoasPage";
 import { TransacoesPage } from "./pages/TransacoesPage";
 import { LoginPage } from "./pages/LoginPage";
 

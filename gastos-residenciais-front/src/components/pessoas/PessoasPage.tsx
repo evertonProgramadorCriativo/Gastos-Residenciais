@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
-import { pessoasService } from "../services/pessoasService";
-import { PessoasTable } from "../components/pessoas/PessoasTable";
-import { PessoaFormModal } from "../components/pessoas/PessoaFormModal";
-import { PessoaDeleteDialog } from "../components/pessoas/PessoaDeleteDialog";
-import type { Pessoa, CriarPessoaInput } from "../types/pessoa";
+import { pessoasService } from "../../services/pessoasService";
+import { PessoasTable } from "../pessoas/PessoasTable";
+import { PessoaFormModal } from "../pessoas/PessoaFormModal";
+import { PessoaDeleteDialog } from "../pessoas/PessoaDeleteDialog";
+import type { Pessoa, CriarPessoaInput } from "../../types/pessoa";
 
 export function PessoasPage() {
   const [pessoas, setPessoas] = useState<Pessoa[]>([]);
