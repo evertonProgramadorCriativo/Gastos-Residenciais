@@ -7,7 +7,7 @@ export function AppLayout() {
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <Sidebar />
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Header nomeUsuario="Eduardo" />
+        <Header />
         <main style={{ padding: 24, flex: 1 }}>
           <Outlet />
         </main>

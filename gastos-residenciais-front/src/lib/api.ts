@@ -1,3 +1,4 @@
+import { authStorage } from "./auth";
 /**
  * Client HTTP centralizado para comunicação com a API do backend.
  * Este arquivo concentra as funções de requisição da aplicação,
@@ -10,9 +11,31 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 // Função genérica responsável por tratar a resposta de qualquer requisição HTTP.
 // O <T> indica que ela pode retornar qualquer tipo esperado pela chamada.
+/**
+ * Monta os headers padrão de toda requisição, incluindo o token JWT
+ * quando existir. Centralizar aqui evita repetir isso em cada service.
+ */
+function montarHeaders(extras?: Record<string, string>): HeadersInit {
+  const token = authStorage.obterToken();
+
+  return {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...extras,
+  };
+}
+
 async function tratarResposta<T>(response: Response): Promise<T> {
-  // Verifica se a resposta da API NÃO foi bem-sucedida
+  // 401: token ausente/expirado/inválido. Nesse caso não faz sentido
+  // mostrar a mensagem crua da API — desloga e deixa o RotaProtegida
+  // (Passo 3) cuidar do redirecionamento para /login.
   // (ex.: status 400, 404, 500 etc.)
+  if (response.status === 401) {
+    authStorage.limpar();
+    window.location.href = "/login";
+    throw new Error("Sessão expirada. Faça login novamente.");
+  }
+  // Verifica se a resposta da API NÃO foi bem-sucedida
   if (!response.ok) {
     // Define uma mensagem padrão de erro usando o status HTTP retornado.
     let mensagem = `Erro na requisição: ${response.status}`;
@@ -50,7 +73,9 @@ async function tratarResposta<T>(response: Response): Promise<T> {
 // Recebe o caminho da rota (ex.: "/pessoas") e retorna o tipo esperado T.
 export async function apiGet<T>(path: string): Promise<T> {
   // Faz a requisição GET para a URL completa da API.
-  const response = await fetch(`${API_URL}${path}`);
+  const response = await fetch(`${API_URL}${path}`, {
+    headers: montarHeaders(),
+  });
 
   // Envia a resposta para a função central de tratamento.
   return tratarResposta<T>(response);
@@ -63,9 +88,7 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
     // Define o método HTTP como POST.
     method: "POST",
-
-    // Informa ao backend que o corpo da requisição está em formato JSON.
-    headers: { "Content-Type": "application/json" },
+    headers: montarHeaders(),
 
     // Converte o objeto JavaScript em texto JSON para enviar na requisição.
     body: JSON.stringify(body),
@@ -82,6 +105,7 @@ export async function apiDelete(path: string): Promise<void> {
   const response = await fetch(`${API_URL}${path}`, {
     // Define o método HTTP como DELETE.
     method: "DELETE",
+    headers: montarHeaders(),
   });
 
   // Trata a resposta da API.

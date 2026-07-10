@@ -1,10 +1,15 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import { FiSearch } from "react-icons/fi";
 
-interface HeaderProps {
-  nomeUsuario?: string;
-}
+export function Header() {
+  const navigate = useNavigate();
+  const { nomeUsuario, encerrarSessao } = useAuth();
 
-export function Header({ nomeUsuario }: HeaderProps) {
+  const handleSair = () => {
+    encerrarSessao();
+    navigate("/login", { replace: true });
+  };
   return (
     <header
       style={{
@@ -71,6 +76,20 @@ export function Header({ nomeUsuario }: HeaderProps) {
               .toUpperCase()}
           </div>
           <span style={{ fontSize: 14, fontWeight: 500 }}>{nomeUsuario}</span>
+          <button
+            onClick={handleSair}
+            style={{
+              background: "none",
+              border: "1px solid var(--cor-borda)",
+              borderRadius: "var(--raio-borda)",
+              padding: "6px 12px",
+              fontSize: 13,
+              cursor: "pointer",
+              color: "var(--cor-texto-secundario)",
+            }}
+          >
+            Sair
+          </button>
         </div>
       )}
     </header>

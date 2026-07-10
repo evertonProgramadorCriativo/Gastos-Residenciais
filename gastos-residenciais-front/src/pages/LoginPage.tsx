@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { authStorage } from "../lib/auth";
 import { Wallet } from "lucide-react";
-
+import { useAuth } from "../contexts/AuthContext";
 type Modo = "login" | "registrar";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const { definirSessao } = useAuth();
 
   const [modo, setModo] = useState<Modo>("login");
   const [nome, setNome] = useState("");
@@ -27,7 +28,7 @@ export function LoginPage() {
           ? await authService.login({ email, senha })
           : await authService.registrar({ nome, email, senha });
 
-      authStorage.salvar(resposta.token, resposta.nome);
+      definirSessao(resposta.token, resposta.nome);
       navigate("/dashboard", { replace: true });
     } catch (err) {
       setErro(err instanceof Error ? err.message : "Erro ao autenticar.");
