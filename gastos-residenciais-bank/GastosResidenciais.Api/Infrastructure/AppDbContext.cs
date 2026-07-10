@@ -36,6 +36,8 @@ public class AppDbContext : DbContext
     // Com esse DbSet você consegue consultar, adicionar, editar e remover transações.
     public DbSet<Transacao> Transacoes => Set<Transacao>();
 
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
+
     // Método chamado pelo EF Core para configurar o mapeamento das entidades.
     // Aqui você define regras como:
     // - campos obrigatórios
@@ -87,6 +89,17 @@ public class AppDbContext : DbContext
                   .HasForeignKey(t => t.PessoaId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
-    }
-}
+        // Configura a entidade Usuario.
+        // O EF vai aplicar essas regras ao criar ou interpretar a tabela correspondente.
+        modelBuilder.Entity<Usuario>(entity =>
+     {
+         entity.Property(u => u.Nome).IsRequired().HasMaxLength(150);
+         entity.Property(u => u.Email).IsRequired().HasMaxLength(200);
+         entity.Property(u => u.SenhaHash).IsRequired();
 
+         // Impede dois usuários com o mesmo e-mail.
+         entity.HasIndex(u => u.Email).IsUnique();
+     });
+    }
+
+}
