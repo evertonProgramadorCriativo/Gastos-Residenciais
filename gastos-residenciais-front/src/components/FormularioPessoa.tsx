@@ -86,50 +86,132 @@ export function FormularioPessoa({ onCriar }: FormularioPessoaProps) {
   };
 
   return (
-    // Formulário que chama handleSubmit ao ser enviado.
-    <form onSubmit={handleSubmit}>
-      <h2>Cadastrar Pessoa</h2>
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        maxWidth: 500,
+        margin: "32px auto",
+        padding: 32,
+        backgroundColor: "var(--cor-card-fundo)",
+        border: "1px solid var(--cor-borda)",
+        borderRadius: "var(--raio-borda)",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+      }}
+    >
+      <h2
+        style={{
+          margin: 0,
+          fontSize: 24,
+          fontWeight: 700,
+          color: "var(--cor-texto)",
+        }}
+      >
+        Cadastrar Pessoa
+      </h2>
 
-      {/* Campo Nome */}
-      <div>
-        <label htmlFor="nome">Nome</label>
+      {/* Nome */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <label
+          htmlFor="nome"
+          style={{
+            fontWeight: 600,
+            fontSize: 14,
+          }}
+        >
+          Nome
+        </label>
 
         <input
           id="nome"
           type="text"
-          // Valor controlado pelo estado "nome".
           value={nome}
-          // Atualiza o estado sempre que o usuário digitar.
           onChange={(e) => setNome(e.target.value)}
-          // Desabilita o campo durante o envio.
           disabled={enviando}
+          placeholder="Digite o nome da pessoa"
+          style={{
+            padding: "12px 16px",
+            border: "1px solid var(--cor-borda)",
+            borderRadius: "var(--raio-borda)",
+            fontSize: 14,
+            outline: "none",
+          }}
         />
       </div>
 
-      {/* Campo Idade */}
-      <div>
-        <label htmlFor="idade">Idade</label>
+      {/* Idade */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <label
+          htmlFor="idade"
+          style={{
+            fontWeight: 600,
+            fontSize: 14,
+          }}
+        >
+          Idade
+        </label>
 
         <input
           id="idade"
           type="number"
-          // Não permite números menores que zero.
           min={0}
-          // Valor controlado pelo estado "idade".
           value={idade}
-          // Atualiza o estado conforme o usuário digita.
           onChange={(e) => setIdade(e.target.value)}
-          // Desabilita o campo durante o envio.
           disabled={enviando}
+          placeholder="Digite a idade"
+          style={{
+            padding: "12px 16px",
+            border: "1px solid var(--cor-borda)",
+            borderRadius: "var(--raio-borda)",
+            fontSize: 14,
+            outline: "none",
+          }}
         />
       </div>
 
-      {/* Exibe a mensagem de erro somente se ela existir */}
-      {erro && <p style={{ color: "red" }}>{erro}</p>}
+      {erro && (
+        <div
+          style={{
+            backgroundColor: "#fee2e2",
+            color: "#dc2626",
+            padding: 12,
+            borderRadius: 8,
+            fontSize: 14,
+          }}
+        >
+          {erro}
+        </div>
+      )}
 
-      {/* Botão de envio */}
-      <button type="submit" disabled={enviando}>
-        {/* Texto dinâmico do botão */}
+      <button
+        type="submit"
+        disabled={enviando}
+        style={{
+          padding: "12px 20px",
+          border: "none",
+          borderRadius: "var(--raio-borda)",
+          backgroundColor: "var(--cor-primaria)",
+          color: "#fff",
+          fontSize: 15,
+          fontWeight: 600,
+          cursor: enviando ? "not-allowed" : "pointer",
+          opacity: enviando ? 0.7 : 1,
+        }}
+      >
         {enviando ? "Salvando..." : "Cadastrar"}
       </button>
     </form>

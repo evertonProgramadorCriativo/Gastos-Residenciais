@@ -2,6 +2,7 @@
 // useState => guarda estados do componente (campos do formulário, erro, loading etc.)
 // useMemo => memoriza um cálculo para evitar refazer em toda renderização sem necessidade.
 import { useState, useMemo } from "react";
+import { ArrowLeftRight, User, FileText, DollarSign, AlertTriangle, Save } from "lucide-react";
 
 // Importa o tipo Pessoa.
 // Esse tipo representa os dados de uma pessoa vindos da API/front.
@@ -155,100 +156,249 @@ export function FormularioTransacao({
 
   // JSX que será renderizado na tela.
   return (
-    // Formulário HTML.
-    // Quando o usuário clicar no botão submit, o handleSubmit será chamado.
-    <form onSubmit={handleSubmit}>
-      {/* Título do formulário */}
-      <h2>Nova Transação</h2>
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        maxWidth: 650,
+        margin: "32px auto",
+        padding: 32,
+        backgroundColor: "var(--cor-card-fundo)",
+        border: "1px solid var(--cor-borda)",
+        borderRadius: "var(--raio-borda)",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+      }}
+    >
+      <h2
+        style={{
+          margin: 0,
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          fontSize: 24,
+          fontWeight: 700,
+        }}
+      >
+        <ArrowLeftRight size={24} />
+        Nova Transação
+      </h2>
 
-      {/* Campo de seleção da pessoa */}
-      <div>
-        {/* Label associada ao select pelo htmlFor="pessoa" */}
-        <label htmlFor="pessoa">Pessoa</label>
+      {/* Pessoa */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <label
+          htmlFor="pessoa"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontWeight: 600,
+          }}
+        >
+          <User size={16} />
+          Pessoa
+        </label>
 
         <select
-          // id usado para conectar com a label
           id="pessoa"
-          // valor atual do select controlado pelo estado pessoaId
           value={pessoaId}
-          // quando o usuário trocar a opção, chama a função handleSelecionarPessoa
           onChange={(e) => handleSelecionarPessoa(e.target.value)}
-          // desabilita o select enquanto estiver enviando
           disabled={enviando}
+          style={{
+            padding: "12px 16px",
+            border: "1px solid var(--cor-borda)",
+            borderRadius: "var(--raio-borda)",
+            fontSize: 14,
+          }}
         >
-          {/* opção padrão vazia */}
           <option value="">Selecione...</option>
 
-          {/* percorre a lista de pessoas e cria uma opção para cada uma */}
           {pessoas.map((p) => (
             <option key={p.id} value={p.id}>
-              {/* texto exibido na opção */}
               {p.nome} ({p.idade} anos)
             </option>
           ))}
         </select>
       </div>
 
-      {/* Campo de descrição */}
-      <div>
-        <label htmlFor="descricao">Descrição</label>
-        <input
-          id="descricao" // conecta com a label
-          type="text" // campo textual
-          value={descricao} // valor controlado pelo estado
-          onChange={(e) => setDescricao(e.target.value)} // atualiza o estado conforme o usuário digita
-          disabled={enviando} // desabilita durante envio
-        />
-      </div>
-
-      {/* Campo de valor */}
-      <div>
-        <label htmlFor="valor">Valor</label>
-        <input
-          id="valor" // conecta com a label
-          type="number" // input numérico
-          min={0.01} // menor valor permitido visualmente no navegador
-          step="0.01" // permite casas decimais de centavos
-          value={valor} // valor controlado pelo estado
-          onChange={(e) => setValor(e.target.value)} // atualiza o estado ao digitar
-          disabled={enviando} // desabilita durante envio
-        />
-      </div>
-
-      {/* Campo de tipo da transação */}
-      <div>
-        <label htmlFor="tipo">Tipo</label>
-        <select
-          id="tipo" // conecta com a label
-          value={tipo} // valor controlado pelo estado
-          onChange={(e) => setTipo(e.target.value as TipoTransacao)} // atualiza o tipo escolhido
-          disabled={enviando} // desabilita durante envio
+      {/* Descrição */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <label
+          htmlFor="descricao"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontWeight: 600,
+          }}
         >
-          {/* opção para despesa */}
+          <FileText size={16} />
+          Descrição
+        </label>
+
+        <input
+          id="descricao"
+          type="text"
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}
+          disabled={enviando}
+          placeholder="Ex: Compra no supermercado"
+          style={{
+            padding: "12px 16px",
+            border: "1px solid var(--cor-borda)",
+            borderRadius: "var(--raio-borda)",
+            fontSize: 14,
+          }}
+        />
+      </div>
+
+      {/* Valor */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <label
+          htmlFor="valor"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontWeight: 600,
+          }}
+        >
+          <DollarSign size={16} />
+          Valor
+        </label>
+
+        <input
+          id="valor"
+          type="number"
+          min={0.01}
+          step="0.01"
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+          disabled={enviando}
+          placeholder="0,00"
+          style={{
+            padding: "12px 16px",
+            border: "1px solid var(--cor-borda)",
+            borderRadius: "var(--raio-borda)",
+            fontSize: 14,
+          }}
+        />
+      </div>
+
+      {/* Tipo */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <label
+          htmlFor="tipo"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontWeight: 600,
+          }}
+        >
+          <ArrowLeftRight size={16} />
+          Tipo
+        </label>
+
+        <select
+          id="tipo"
+          value={tipo}
+          onChange={(e) => setTipo(e.target.value as TipoTransacao)}
+          disabled={enviando}
+          style={{
+            padding: "12px 16px",
+            border: "1px solid var(--cor-borda)",
+            borderRadius: "var(--raio-borda)",
+            fontSize: 14,
+          }}
+        >
           <option value="Despesa">Despesa</option>
 
-          {/* opção para receita */}
           <option value="Receita" disabled={pessoaEhMenorDeIdade}>
-            {/* Se a pessoa for menor, mostra aviso ao lado do texto */}
-            Receita{" "}
-            {pessoaEhMenorDeIdade ? "(indisponível para menores de 18)" : ""}
+            Receita
+            {pessoaEhMenorDeIdade ? " (indisponível para menores)" : ""}
           </option>
         </select>
 
-        {/* Mensagem informativa exibida apenas se a pessoa selecionada for menor de idade */}
         {pessoaEhMenorDeIdade && (
-          <p style={{ fontSize: "0.85em", color: "#666" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              backgroundColor: "#FEF3C7",
+              color: "#92400E",
+              padding: 12,
+              borderRadius: 8,
+              fontSize: 14,
+            }}
+          >
+            <AlertTriangle size={18} />
             Pessoas menores de 18 anos só podem registrar despesas.
-          </p>
+          </div>
         )}
       </div>
 
-      {/* Se houver erro, exibe a mensagem em vermelho */}
-      {erro && <p style={{ color: "red" }}>{erro}</p>}
+      {erro && (
+        <div
+          style={{
+            backgroundColor: "#FEE2E2",
+            color: "#B91C1C",
+            padding: 12,
+            borderRadius: 8,
+            fontSize: 14,
+          }}
+        >
+          {erro}
+        </div>
+      )}
 
-      {/* Botão de envio do formulário */}
-      <button type="submit" disabled={enviando}>
-        {/* Se estiver enviando, mostra "Salvando...", senão mostra o texto normal */}
+      <button
+        type="submit"
+        disabled={enviando}
+        style={{
+          height: 48,
+          border: "none",
+          borderRadius: "var(--raio-borda)",
+          backgroundColor: "var(--cor-primaria)",
+          color: "#fff",
+          fontSize: 15,
+          fontWeight: 600,
+          cursor: enviando ? "not-allowed" : "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          opacity: enviando ? 0.7 : 1,
+        }}
+      >
+        <Save size={18} />
+
         {enviando ? "Salvando..." : "Cadastrar Transação"}
       </button>
     </form>
