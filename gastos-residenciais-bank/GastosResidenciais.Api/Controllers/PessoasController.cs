@@ -49,11 +49,11 @@ public class PessoasController : ControllerBase
         _context = context;
     }
 
-    /// <summary>
-    /// Cria uma nova pessoa.
-    /// Método responsável por receber os dados do cliente,
-    /// converter para entidade, salvar no banco e retornar a resposta.
-    /// </summary>
+    // <summary>
+    // Cria uma nova pessoa.
+    // Método responsável por receber os dados do cliente,
+    // converter para entidade, salvar no banco e retornar a resposta.
+    // </summary>
     [HttpPost] // Indica que esse método responde a requisições HTTP POST em /pessoas
     public async Task<ActionResult<PessoaRespostaDto>> Criar(CriarPessoaDto dto)
     {
@@ -77,9 +77,9 @@ public class PessoasController : ControllerBase
         return CreatedAtAction(nameof(BuscarPorId), new { id = pessoa.Id }, pessoa.ParaDto());
     }
 
-    /// <summary>
-    /// Lista todas as pessoas cadastradas.
-    /// </summary>
+    // <summary>
+    // Lista todas as pessoas cadastradas.
+    // </summary>
     [HttpGet] // Responde a GET /pessoas
     public async Task<ActionResult<IEnumerable<PessoaRespostaDto>>> Listar()
     {
@@ -94,9 +94,9 @@ public class PessoasController : ControllerBase
         return Ok(pessoas);
     }
 
-    /// <summary>
-    /// Busca uma pessoa específica pelo Id.
-    /// </summary>
+    // <summary>
+    // Busca uma pessoa específica pelo Id.
+    // </summary>
     [HttpGet("{id:guid}")] // Responde a GET /pessoas/{id}, exigindo que o id seja um Guid válido
     public async Task<ActionResult<PessoaRespostaDto>> BuscarPorId(Guid id)
     {
@@ -114,29 +114,11 @@ public class PessoasController : ControllerBase
         // Se encontrou, converte a entidade para DTO e retorna HTTP 200 OK.
         return Ok(pessoa.ParaDto());
     }
-    /// <summary>Lista as transações de uma pessoa específica.</summary>
-    [HttpGet("{pessoaId:guid}/transacoes")]
-    public async Task<ActionResult<IEnumerable<TransacaoRespostaDto>>> ListarTransacoesDaPessoa(Guid pessoaId)
-    {
-        var pessoaExiste = await _context.Pessoas.AnyAsync(p => p.Id == pessoaId);
-
-        if (!pessoaExiste)
-        {
-            return NotFound(new { mensagem = "Pessoa não encontrada." });
-        }
-
-        var transacoes = await _context.Transacoes
-            .Where(t => t.PessoaId == pessoaId)
-            .Select(t => t.ParaDto())
-            .ToListAsync();
-
-        return Ok(transacoes);
-    }
-    /// <summary>
-    /// Remove uma pessoa.
-    /// Futuramente, se houver transações associadas, elas poderão ser removidas
-    /// automaticamente em cascata, dependendo da configuração do relacionamento.
-    /// </summary>
+    // <summary>
+    // Remove uma pessoa.
+    // Futuramente, se houver transações associadas, elas poderão ser removidas
+    // automaticamente em cascata, dependendo da configuração do relacionamento.
+    // </summary>
     [HttpDelete("{id:guid}")] // Responde a DELETE /pessoas/{id}
     public async Task<IActionResult> Deletar(Guid id)
     {
@@ -160,4 +142,3 @@ public class PessoasController : ControllerBase
         return NoContent();
     }
 }
-

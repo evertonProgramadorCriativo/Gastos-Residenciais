@@ -1,11 +1,9 @@
 import { ReactNode } from "react";
 import { formatarMoeda } from "../../lib/formato";
-import {
-  Users,
-  ArrowLeftRight,
-  TrendingDown,
-  TrendingUp,
-} from "lucide-react";
+import { Users, ArrowLeftRight, TrendingDown, TrendingUp } from "lucide-react";
+import { useContadorAnimado } from "../../hooks/useContadorAnimado";
+import "./animacoes.css";
+
 interface CardsResumoProps {
   totalPessoas: number;
   totalTransacoes: number;
@@ -16,18 +14,29 @@ interface CardsResumoProps {
 function Card({
   titulo,
   valor,
+  formato = "numero",
   subtitulo,
   icone,
   corIcone,
+  atraso = 0,
 }: {
   titulo: string;
-  valor: string | number;
+  valor: number;
+  formato?: "numero" | "moeda";
   subtitulo: string;
   icone: ReactNode;
   corIcone: string;
+  atraso?: number;
 }) {
+  const valorAnimado = useContadorAnimado(valor);
+  const valorExibido =
+    formato === "moeda"
+      ? formatarMoeda(valorAnimado)
+      : Math.round(valorAnimado).toLocaleString("pt-BR");
+
   return (
     <div
+      className="dashboard-card-anim"
       style={{
         backgroundColor: "var(--cor-card-fundo)",
         border: "1px solid var(--cor-borda)",
@@ -35,10 +44,23 @@ function Card({
         padding: 20,
         flex: 1,
         boxShadow: "var(--sombra-card)",
+        animationDelay: `${atraso}ms`,
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-        <span style={{ fontSize: 13, color: "var(--cor-texto-secundario)", fontWeight: 500 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <span
+          style={{
+            fontSize: 13,
+            color: "var(--cor-texto-secundario)",
+            fontWeight: 500,
+          }}
+        >
           {titulo}
         </span>
         <span
@@ -56,8 +78,12 @@ function Card({
           {icone}
         </span>
       </div>
-      <div style={{ fontSize: 26, fontWeight: 700, margin: "8px 0 4px" }}>{valor}</div>
-      <span style={{ fontSize: 12, color: "var(--cor-texto-secundario)" }}>{subtitulo}</span>
+      <div style={{ fontSize: 26, fontWeight: 700, margin: "8px 0 4px" }}>
+        {valorExibido}
+      </div>
+      <span style={{ fontSize: 12, color: "var(--cor-texto-secundario)" }}>
+        {subtitulo}
+      </span>
     </div>
   );
 }
@@ -76,6 +102,7 @@ export function CardsResumo({
         subtitulo="Cadastradas na residência"
         icone={<Users size={18} />}
         corIcone="#dbeafe"
+        atraso={0}
       />
       <Card
         titulo="TRANSAÇÕES"
@@ -83,20 +110,25 @@ export function CardsResumo({
         subtitulo="No período atual"
         icone={<ArrowLeftRight size={18} />}
         corIcone="#e0e7ff"
+        atraso={80}
       />
       <Card
         titulo="TOTAL DE GASTOS"
-        valor={formatarMoeda(totalDespesas)}
+        valor={totalDespesas}
+        formato="moeda"
         subtitulo="Saídas do mês"
         icone={<TrendingDown size={18} />}
         corIcone="#fee2e2"
+        atraso={160}
       />
       <Card
         titulo="TOTAL DE ENTRADAS"
-        valor={formatarMoeda(totalReceitas)}
+        valor={totalReceitas}
+        formato="moeda"
         subtitulo="Receitas do mês"
         icone={<TrendingUp size={18} />}
         corIcone="#dcfce7"
+        atraso={240}
       />
     </div>
   );

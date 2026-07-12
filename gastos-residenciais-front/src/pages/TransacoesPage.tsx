@@ -1,17 +1,34 @@
 import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { pessoasService } from "../services/pessoasService";
 import { transacoesService } from "../services/transacoesService";
-import { FormularioTransacao } from "../components/FormularioTransacao";
-import { ListaTransacoes } from "../components/ListaTransacoes";
+import { TransacoesTable } from "../components/transacoes/TransacoesTable";
+import { TransacaoFormModal } from "../components/transacoes/TransacaoFormModal";
+import { TransacaoDeleteDialog } from "../components/transacoes/TransacaoDeleteDialog";
 import type { Pessoa } from "../types/pessoa";
 import type { Transacao, CriarTransacaoInput } from "../types/transacao";
 
 export function TransacoesPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [pessoas, setPessoas] = useState<Pessoa[]>([]);
   const [transacoes, setTransacoes] = useState<Transacao[]>([]);
-  const [filtroPessoaId, setFiltroPessoaId] = useState("");
+
+  // Inicializa o filtro já lendo o parâmetro ?pessoaId= da URL, se existir
+  const [filtroPessoaId, setFiltroPessoaId] = useState(
+    searchParams.get("pessoaId") ?? "",
+  );
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [transacaoParaExcluir, setTransacaoParaExcluir] =
+    useState<Transacao | null>(null);
+
+  // Mantém o filtro sincronizado se o usuário já estiver em /transacoes
+  // e clicar em outra pessoa na busca do Header
+  useEffect(() => {
+    const idDaUrl = searchParams.get("pessoaId") ?? "";
+    setFiltroPessoaId(idDaUrl);
+  }, [searchParams]);
 
   const carregarPessoas = useCallback(async () => {
     const dados = await pessoasService.listar();
@@ -46,38 +63,77 @@ export function TransacoesPage() {
     await carregarTransacoes();
   };
 
-  const handleDeletar = async (id: string) => {
+  const handleExcluir = async (id: string) => {
     await transacoesService.deletar(id);
     await carregarTransacoes();
   };
 
+  // Quando o filtro muda manualmente na própria tela (dropdown da tabela),
+  // atualiza a URL também, mantendo um único lugar de verdade
+  const handleMudarFiltro = (id: string) => {
+    setFiltroPessoaId(id);
+    setSearchParams(id ? { pessoaId: id } : {});
+  };
+
   return (
     <div>
-      <h1 style={{ fontSize: 24, marginBottom: 4 }}>Transações</h1>
-      <p style={{ color: "var(--cor-texto-secundario)", marginBottom: 24 }}>
-        Registre receitas e despesas da residência.
-      </p>
-
-      <FormularioTransacao pessoas={pessoas} onCriar={handleCriar} />
-      <hr
+      <div
         style={{
-          margin: "24px 0",
-          border: "none",
-          borderTop: "1px solid var(--cor-borda)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: 24,
         }}
-      />
+      >
+        <div>
+          <h1 style={{ fontSize: 24, marginBottom: 4 }}>Transações</h1>
+          <p style={{ color: "var(--cor-texto-secundario)", margin: 0 }}>
+            Registre receitas e despesas da residência.
+          </p>
+        </div>
+
+        <button
+          onClick={() => setModalAberto(true)}
+          style={{
+            padding: "10px 16px",
+            backgroundColor: "var(--cor-primaria)",
+            color: "#fff",
+            border: "none",
+            borderRadius: "var(--raio-borda)",
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          + Nova Transação
+        </button>
+      </div>
 
       {carregando && <p>Carregando...</p>}
       {erro && <p style={{ color: "var(--cor-erro)" }}>{erro}</p>}
+
       {!carregando && !erro && (
-        <ListaTransacoes
+        <TransacoesTable
           transacoes={transacoes}
           pessoas={pessoas}
           filtroPessoaId={filtroPessoaId}
-          onMudarFiltro={setFiltroPessoaId}
-          onDeletar={handleDeletar}
+          onMudarFiltro={handleMudarFiltro}
+          onExcluir={setTransacaoParaExcluir}
         />
       )}
+
+      <TransacaoFormModal
+        aberto={modalAberto}
+        pessoas={pessoas}
+        onFechar={() => setModalAberto(false)}
+        onCriar={handleCriar}
+      />
+
+      <TransacaoDeleteDialog
+        transacao={transacaoParaExcluir}
+        onFechar={() => setTransacaoParaExcluir(null)}
+        onConfirmar={handleExcluir}
+      />
     </div>
   );
 }

@@ -10,10 +10,10 @@ using GastosResidenciais.Api.Domain;
 // DTO = Data Transfer Object, usado para transportar dados entre API e cliente.
 namespace GastosResidenciais.Api.DTOs;
 
-/// <summary>
-/// DTO de entrada para criação de uma pessoa.
-/// Essa classe representa os dados que o cliente precisa enviar para cadastrar uma pessoa.
-/// </summary>
+// <summary>
+// DTO de entrada para criação de uma pessoa.
+// Essa classe representa os dados que o cliente precisa enviar para cadastrar uma pessoa.
+// </summary>
 public class CriarPessoaDto
 {
     // [Required] => torna o campo obrigatório.
@@ -36,11 +36,11 @@ public class CriarPessoaDto
     public int Idade { get; set; }
 }
 
-/// <summary>
-/// DTO de saída, ou seja, o objeto que a API devolve ao cliente.
-/// Em vez de retornar a entidade do banco diretamente,
-/// a API retorna esse DTO com apenas os dados necessários.
-/// </summary>
+// <summary>
+// DTO de saída, ou seja, o objeto que a API devolve ao cliente.
+// Em vez de retornar a entidade do banco diretamente,
+// a API retorna esse DTO com apenas os dados necessários.
+// </summary>
 public class PessoaRespostaDto
 {
     // Identificador único da pessoa.
@@ -53,11 +53,11 @@ public class PessoaRespostaDto
     public int Idade { get; set; }
 }
 
-/// <summary>
-/// Classe estática com métodos de conversão entre DTOs e entidade Pessoa.
-/// Esses métodos ajudam a separar a camada da API da camada de domínio,
-/// evitando expor a entidade do EF Core diretamente.
-/// </summary>
+// <summary>
+// Classe estática com métodos de conversão entre DTOs e entidade Pessoa.
+// Esses métodos ajudam a separar a camada da API da camada de domínio,
+// evitando expor a entidade do EF Core diretamente.
+// </summary>
 public static class PessoaMappingExtensions
 {
     // Método de extensão que converte um CriarPessoaDto em uma entidade Pessoa.

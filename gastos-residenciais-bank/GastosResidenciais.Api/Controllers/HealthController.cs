@@ -14,10 +14,10 @@ public class HealthController : ControllerBase
         _context = context;
     }
 
-    /// <summary>
-    /// Verifica se a API consegue abrir uma conexão real com o PostgreSQL.
-    /// Usado apenas para validação de infraestrutura.
-    /// </summary>
+    // <summary>
+    // Verifica se a API consegue abrir uma conexão real com o PostgreSQL.
+    // Usado apenas para validação de infraestrutura.
+    // </summary>
     [HttpGet("db")]
     public async Task<IActionResult> CheckDatabaseConnection()
     {

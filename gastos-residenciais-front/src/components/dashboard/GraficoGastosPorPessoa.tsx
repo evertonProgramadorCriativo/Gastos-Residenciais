@@ -1,4 +1,5 @@
 import type { TotalPorPessoa } from "../../types/totais";
+import "./animacoes.css";
 
 interface GraficoGastosPorPessoaProps {
   dados: TotalPorPessoa[];
@@ -12,12 +13,16 @@ const formatarMoedaCompacta = (valor: number) =>
   });
 
 export function GraficoGastosPorPessoa({ dados }: GraficoGastosPorPessoaProps) {
-  const dadosGrafico = dados.map((p) => ({
-    nome: p.nome.split(" ")[0], // só o primeiro nome, pra caber no eixo X
-    despesas: p.totalDespesas,
-  }));
+  const maiorValor = Math.max(
+    ...dados.map((p) => Math.max(p.totalReceitas, p.totalDespesas)),
+    0,
+  );
+  const semDados = dados.length === 0 || maiorValor === 0;
 
-  const maiorValor = Math.max(...dadosGrafico.map((d) => d.despesas), 0);
+  const dadosOrdenados = [...dados].sort(
+    (a, b) =>
+      b.totalReceitas + b.totalDespesas - (a.totalReceitas + a.totalDespesas),
+  );
 
   return (
     <div
@@ -30,68 +35,197 @@ export function GraficoGastosPorPessoa({ dados }: GraficoGastosPorPessoaProps) {
         boxShadow: "var(--sombra-card)",
       }}
     >
-      <h3 style={{ margin: "0 0 4px", fontSize: 16 }}>Gastos por pessoa</h3>
-      <p
+      <div
         style={{
-          margin: "0 0 16px",
-          fontSize: 13,
-          color: "var(--cor-texto-secundario)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
         }}
       >
-        Distribuição dos gastos entre os moradores
-      </p>
+        <div>
+          <h3 style={{ margin: "0 0 4px", fontSize: 16 }}>Gastos por pessoa</h3>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 13,
+              color: "var(--cor-texto-secundario)",
+            }}
+          >
+            Receitas e despesas de cada morador
+          </p>
+        </div>
+        <div style={{ display: "flex", gap: 12, fontSize: 12, flexShrink: 0 }}>
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <span
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                backgroundColor: "var(--cor-sucesso)",
+              }}
+            />
+            Receita
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <span
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                backgroundColor: "var(--cor-erro)",
+              }}
+            />
+            Despesa
+          </span>
+        </div>
+      </div>
 
-      {dadosGrafico.length === 0 ? (
-        <p style={{ color: "var(--cor-texto-secundario)", fontSize: 14 }}>
-          Sem dados ainda.
+      {semDados ? (
+        <p
+          style={{
+            color: "var(--cor-texto-secundario)",
+            fontSize: 14,
+            marginTop: 16,
+          }}
+        >
+          Sem movimentações ainda.
         </p>
       ) : (
         <div
           style={{
-            display: "flex",
-            alignItems: "flex-end",
-            gap: 16,
-            height: 260,
-            padding: "0 8px",
+            overflowX: "auto",
+            overflowY: "hidden",
+            marginTop: 20,
           }}
         >
-          {dadosGrafico.map((item) => {
-            const alturaPercentual =
-              maiorValor > 0 ? (item.despesas / maiorValor) * 100 : 0;
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              gap: 48,
+              height: 300,
+              padding: "0 8px 8px",
+              width: "max-content",
+            }}
+          >
+            {dadosOrdenados.map((pessoa, indice) => {
+              const alturaReceita =
+                maiorValor > 0 ? (pessoa.totalReceitas / maiorValor) * 100 : 0;
+              const alturaDespesa =
+                maiorValor > 0 ? (pessoa.totalDespesas / maiorValor) * 100 : 0;
+              const atrasoBarra = indice * 60;
 
-            return (
-              <div
-                key={item.nome}
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                  height: "100%",
-                  gap: 6,
-                }}
-              >
-                <span
-                  style={{ fontSize: 11, color: "var(--cor-texto-secundario)" }}
-                >
-                  {formatarMoedaCompacta(item.despesas)}
-                </span>
+              return (
                 <div
-                  title={formatarMoedaCompacta(item.despesas)}
+                  key={pessoa.pessoaId}
+                  className="dashboard-linha-anim"
                   style={{
-                    width: "100%",
-                    maxWidth: 48,
-                    height: `${Math.max(alturaPercentual, 2)}%`,
-                    backgroundColor: "var(--cor-primaria)",
-                    borderRadius: "6px 6px 0 0",
-                    transition: "height 0.3s ease",
+                    flexShrink: 0,
+                    width: 110,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    height: "100%",
+                    gap: 10,
+                    animationDelay: `${atrasoBarra}ms`,
                   }}
-                />
-                <span style={{ fontSize: 12, marginTop: 4 }}>{item.nome}</span>
-              </div>
-            );
-          })}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-end",
+                      gap: 14,
+                      height: 230,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        height: "100%",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 12,
+                          color: "var(--cor-sucesso)",
+                          fontWeight: 600,
+                          marginBottom: 6,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {formatarMoedaCompacta(pessoa.totalReceitas)}
+                      </span>
+                      <div
+                        className="dashboard-barra-anim"
+                        title={`Receitas: ${formatarMoedaCompacta(pessoa.totalReceitas)}`}
+                        style={{
+                          width: 38,
+                          height: `${Math.max(alturaReceita, pessoa.totalReceitas > 0 ? 2 : 0)}%`,
+                          backgroundColor: "var(--cor-sucesso)",
+                          borderRadius: "6px 6px 0 0",
+                          transition: "height 0.3s ease",
+                          animationDelay: `${atrasoBarra}ms`,
+                        }}
+                      />
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        height: "100%",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 12,
+                          color: "var(--cor-erro)",
+                          fontWeight: 600,
+                          marginBottom: 6,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {formatarMoedaCompacta(pessoa.totalDespesas)}
+                      </span>
+                      <div
+                        className="dashboard-barra-anim"
+                        title={`Despesas: ${formatarMoedaCompacta(pessoa.totalDespesas)}`}
+                        style={{
+                          width: 38,
+                          height: `${Math.max(alturaDespesa, pessoa.totalDespesas > 0 ? 2 : 0)}%`,
+                          backgroundColor: "var(--cor-erro)",
+                          borderRadius: "6px 6px 0 0",
+                          transition: "height 0.3s ease",
+                          animationDelay: `${atrasoBarra + 40}ms`,
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 500,
+                      textAlign: "center",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      width: "100%",
+                    }}
+                    title={pessoa.nome}
+                  >
+                    {pessoa.nome.split(" ")[0]}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GastosResidenciais.Api.Migrations
 {
-    /// <inheritdoc />
+    // <inheritdoc />
     public partial class AddPessoa : Migration
     {
-        /// <inheritdoc />
+        // <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -25,7 +25,7 @@ namespace GastosResidenciais.Api.Migrations
                 });
         }
 
-        /// <inheritdoc />
+        // <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

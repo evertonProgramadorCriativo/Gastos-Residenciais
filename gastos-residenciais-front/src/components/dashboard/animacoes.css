@@ -1,0 +1,62 @@
+/* Entrada suave (fade + leve subida) — usada nos cards e nas linhas de lista */
+@keyframes dashboard-fade-subir {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Crescimento das barras do gráfico "Gastos por pessoa" */
+@keyframes dashboard-crescer-barra {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Entrada do donut "Por categoria" */
+@keyframes dashboard-aparecer-donut {
+  from {
+    opacity: 0;
+    transform: scale(0.75) rotate(-90deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.dashboard-card-anim {
+  animation: dashboard-fade-subir 0.5s ease both;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dashboard-card-anim:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-barra-anim {
+  transform-origin: bottom;
+  animation: dashboard-crescer-barra 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.dashboard-barra-anim:hover {
+  filter: brightness(1.08);
+}
+
+.dashboard-donut-anim {
+  animation: dashboard-aparecer-donut 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dashboard-linha-anim {
+  animation: dashboard-fade-subir 0.4s ease both;
+}

@@ -15,7 +15,7 @@ namespace GastosResidenciais.Api.Migrations
     [Migration("20260710192916_AddCategoriaToTransacao")]
     partial class AddCategoriaToTransacao
     {
-        /// <inheritdoc />
+        // <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

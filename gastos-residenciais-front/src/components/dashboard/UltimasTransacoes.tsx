@@ -2,6 +2,7 @@ import type { Transacao } from "../../types/transacao";
 import type { Pessoa } from "../../types/pessoa";
 import { CATEGORIA_LABEL } from "../../lib/categorias";
 import { formatarMoeda } from "../../lib/formato";
+import "./animacoes.css";
 
 interface UltimasTransacoesProps {
   transacoes: Transacao[];
@@ -72,10 +73,14 @@ export function UltimasTransacoes({
             </tr>
           </thead>
           <tbody>
-            {ultimas.map((t) => (
+            {ultimas.map((t, indice) => (
               <tr
                 key={t.id}
-                style={{ borderTop: "1px solid var(--cor-borda)" }}
+                className="dashboard-linha-anim"
+                style={{
+                  borderTop: "1px solid var(--cor-borda)",
+                  animationDelay: `${indice * 50}ms`,
+                }}
               >
                 <td style={{ padding: "10px 0" }}>{t.descricao}</td>
                 <td style={{ padding: "10px 0" }}>

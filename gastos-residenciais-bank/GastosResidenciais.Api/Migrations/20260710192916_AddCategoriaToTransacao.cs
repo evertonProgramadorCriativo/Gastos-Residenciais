@@ -4,10 +4,10 @@
 
 namespace GastosResidenciais.Api.Migrations
 {
-    /// <inheritdoc />
+    // <inheritdoc />
     public partial class AddCategoriaToTransacao : Migration
     {
-        /// <inheritdoc />
+        // <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -18,7 +18,7 @@ namespace GastosResidenciais.Api.Migrations
                 defaultValue: "Outros");
         }
 
-        /// <inheritdoc />
+        // <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

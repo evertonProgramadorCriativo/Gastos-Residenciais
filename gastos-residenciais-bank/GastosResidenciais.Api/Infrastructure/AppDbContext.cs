@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 // Normalmente aqui ficam classes de acesso a banco, repositórios, contextos, etc.
 namespace GastosResidenciais.Api.Infrastructure;
 
-/// <summary>
-/// Contexto principal do EF Core para acesso ao banco PostgreSQL.
-/// O DbContext é a classe responsável por representar a conexão com o banco
-/// e mapear as entidades da aplicação para tabelas.
-/// </summary>
+// <summary>
+// Contexto principal do EF Core para acesso ao banco PostgreSQL.
+// O DbContext é a classe responsável por representar a conexão com o banco
+// e mapear as entidades da aplicação para tabelas.
+// </summary>
 public class AppDbContext : DbContext
 {
     // Construtor do contexto.

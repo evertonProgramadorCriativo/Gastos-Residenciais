@@ -1,6 +1,8 @@
 import type { Transacao } from "../../types/transacao";
 import { CATEGORIA_LABEL, CATEGORIA_COR } from "../../lib/categorias";
 import { formatarMoeda } from "../../lib/formato";
+import { useContadorAnimado } from "../../hooks/useContadorAnimado";
+import "./animacoes.css";
 
 interface GraficoPorCategoriaProps {
   transacoes: Transacao[];
@@ -14,19 +16,19 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
       return acc;
     }, {});
 
-  const dadosGrafico = Object.entries(totaisPorCategoria).map(
-    ([categoria, valor]) => ({
+  const dadosGrafico = Object.entries(totaisPorCategoria)
+    .map(([categoria, valor]) => ({
       categoria,
       label:
         CATEGORIA_LABEL[categoria as keyof typeof CATEGORIA_LABEL] ?? categoria,
       valor,
       cor: CATEGORIA_COR[categoria as keyof typeof CATEGORIA_COR] ?? "#94a3b8",
-    }),
-  );
+    }))
+    .sort((a, b) => b.valor - a.valor); // maior gasto primeiro
 
   const total = dadosGrafico.reduce((soma, item) => soma + item.valor, 0);
+  const totalAnimado = useContadorAnimado(total);
 
-  // Monta o conic-gradient acumulando os percentuais de cada fatia
   let acumulado = 0;
   const fatias = dadosGrafico.map((item) => {
     const percentual = total > 0 ? (item.valor / total) * 100 : 0;
@@ -48,6 +50,8 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
         padding: 20,
         flex: 1,
         boxShadow: "var(--sombra-card)",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <h3 style={{ margin: "0 0 4px", fontSize: 16 }}>Por categoria</h3>
@@ -67,15 +71,18 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
         </p>
       ) : (
         <>
+          {/* Donut — tamanho fixo, não cresce com a quantidade de categorias */}
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               height: 200,
+              flexShrink: 0,
             }}
           >
             <div
+              className="dashboard-donut-anim"
               title="Distribuição por categoria"
               style={{
                 width: 170,
@@ -83,9 +90,9 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
                 borderRadius: "50%",
                 background: gradiente,
                 position: "relative",
+                transition: "background 0.4s ease",
               }}
             >
-              {/* Furo do donut */}
               <div
                 style={{
                   position: "absolute",
@@ -105,27 +112,33 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
                   padding: 8,
                 }}
               >
-                {formatarMoeda(total)}
+                {formatarMoeda(totalAnimado)}
               </div>
             </div>
           </div>
 
+          {/* Lista de categorias — cresce em altura, com scroll interno */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               gap: 8,
               marginTop: 8,
+              maxHeight: 140,
+              overflowY: "auto",
+              paddingRight: 4,
             }}
           >
-            {dadosGrafico.map((item) => (
+            {dadosGrafico.map((item, indice) => (
               <div
                 key={item.categoria}
+                className="dashboard-linha-anim"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 8,
                   fontSize: 13,
+                  animationDelay: `${150 + indice * 40}ms`,
                 }}
               >
                 <span
@@ -134,10 +147,22 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
                     height: 10,
                     borderRadius: "50%",
                     backgroundColor: item.cor,
+                    flexShrink: 0,
                   }}
                 />
-                <span style={{ flex: 1 }}>{item.label}</span>
-                <strong>{formatarMoeda(item.valor)}</strong>
+                <span
+                  style={{
+                    flex: 1,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {item.label}
+                </span>
+                <strong style={{ flexShrink: 0 }}>
+                  {formatarMoeda(item.valor)}
+                </strong>
               </div>
             ))}
           </div>

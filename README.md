@@ -53,7 +53,7 @@ Sistema para gerenciamento de gastos residenciais desenvolvido para praticar con
 
 ---
 
-##  Subindo o Backend
+##  Subindo o Backend docker 
 
 Na raiz do projeto execute:
 
