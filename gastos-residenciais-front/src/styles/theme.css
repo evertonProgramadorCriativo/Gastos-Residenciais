@@ -14,6 +14,29 @@
   --cor-erro: #dc2626;
   --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.08);
   --raio-borda: 8px;
+
+  /* Layout — mantenha em sincronia com src/lib/breakpoints.ts */
+  --sidebar-width: 240px;
+  --header-height: 64px;
+
+  /* Espaçamento — escala automaticamente conforme o breakpoint */
+  --espaco-page: 24px;
+  --espaco-card: 20px;
+}
+
+/* Tablet: 768px é o mesmo corte usado por useEhTablet() */
+@media (max-width: 768px) {
+  :root {
+    --espaco-page: 16px;
+  }
+}
+
+/* Celular: 480px é o mesmo corte usado por useEhMobile() */
+@media (max-width: 480px) {
+  :root {
+    --espaco-page: 12px;
+    --espaco-card: 16px;
+  }
 }
 
 * {

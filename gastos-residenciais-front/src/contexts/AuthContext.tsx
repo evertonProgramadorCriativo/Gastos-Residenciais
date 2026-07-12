@@ -12,6 +12,8 @@ interface AuthContextType {
   estaAutenticado: boolean;
   definirSessao: (token: string, nome: string) => void;
   encerrarSessao: () => void;
+  mostrarBoasVindas: boolean;
+  fecharBoasVindas: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,14 +23,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authStorage.obterNome(),
   );
 
+  // Controla a exibição do modal de boas-vindas.
+  // Só vira "true" quando definirSessao é chamado a partir de um login/cadastro
+  // real (ação do usuário), nunca ao simplesmente recarregar a página com uma
+  // sessão já salva no localStorage.
+  const [mostrarBoasVindas, setMostrarBoasVindas] = useState(false);
+
   const definirSessao = useCallback((token: string, nome: string) => {
     authStorage.salvar(token, nome);
     setNomeUsuario(nome);
+    setMostrarBoasVindas(true);
   }, []);
 
   const encerrarSessao = useCallback(() => {
     authStorage.limpar();
     setNomeUsuario(null);
+    setMostrarBoasVindas(false);
+  }, []);
+
+  const fecharBoasVindas = useCallback(() => {
+    setMostrarBoasVindas(false);
   }, []);
 
   return (
@@ -38,6 +52,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         estaAutenticado: nomeUsuario !== null,
         definirSessao,
         encerrarSessao,
+        mostrarBoasVindas,
+        fecharBoasVindas,
       }}
     >
       {children}
