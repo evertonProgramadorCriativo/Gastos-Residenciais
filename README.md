@@ -213,7 +213,7 @@ Se quiser, posso te mostrar como ficaria o SQL gerado (`CREATE TABLE ... REFEREN
 - `Usuarios` -> **quem pode entrar** no sistema (não tem relação com o dinheiro em si).
 
 ## Populando o banco com dados (Opcional)
-
+```csharp
 -- Usuário e banco de dados
 
 --  Criação de Tabelas
@@ -254,7 +254,7 @@ CREATE INDEX IF NOT EXISTS "IX_Transacoes_PessoaId" ON "Transacoes" ("PessoaId")
 -- (esses textos precisam bater exatamente com os enums do backend em C#)
 
 
- 
+
 -- Inserir Dados de exemplo (6 pessoas + 22 transações)
 -- 
 -- IDs fixos + ON CONFLICT DO NOTHING: rodar o script de novo não duplica nada.
@@ -312,7 +312,7 @@ ON CONFLICT ("Id") DO NOTHING;
 SELECT
     (SELECT COUNT(*) FROM "Pessoas")    AS total_pessoas,
     (SELECT COUNT(*) FROM "Transacoes") AS total_transacoes;
-
+```
 ## Funcionalidades
 
 ### Backend
