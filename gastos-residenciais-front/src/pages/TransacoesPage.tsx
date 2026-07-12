@@ -80,8 +80,10 @@ export function TransacoesPage() {
       <div
         style={{
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-between",
           alignItems: "flex-start",
+          gap: 12,
           marginBottom: 24,
         }}
       >

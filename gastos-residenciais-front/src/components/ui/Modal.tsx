@@ -21,7 +21,7 @@ export function Modal({ aberto, titulo, onFechar, children }: ModalProps) {
         alignItems: "center",
         justifyContent: "center",
         zIndex: 50,
-        padding: 16,
+        padding: 6,
       }}
     >
       <div
