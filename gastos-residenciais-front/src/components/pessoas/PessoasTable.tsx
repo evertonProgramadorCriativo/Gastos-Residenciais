@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Avatar } from "../ui/Avatar";
 import type { Pessoa } from "../../types/pessoa";
-import { Trash2 } from "lucide-react";
-import { Search } from "lucide-react";
+import { Trash2, Search } from "lucide-react";
+import { useEhTabela } from "../../hooks/useMediaQuery";
 
 interface PessoasTableProps {
   pessoas: Pessoa[];
@@ -15,6 +15,7 @@ function idAbreviado(id: string): string {
 
 export function PessoasTable({ pessoas, onExcluir }: PessoasTableProps) {
   const [busca, setBusca] = useState("");
+  const ehTabela = useEhTabela();
 
   const pessoasFiltradas = pessoas.filter((p) =>
     p.nome.toLowerCase().includes(busca.toLowerCase()),
@@ -84,6 +85,66 @@ export function PessoasTable({ pessoas, onExcluir }: PessoasTableProps) {
             ? "Nenhuma pessoa encontrada para essa busca."
             : "Nenhuma pessoa cadastrada ainda."}
         </p>
+      ) : ehTabela ? (
+        // Abaixo de 640px: lista de cards em vez de tabela.
+        <div>
+          {pessoasFiltradas.map((pessoa) => (
+            <div
+              key={pessoa.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "14px 16px",
+                borderTop: "1px solid var(--cor-borda)",
+              }}
+            >
+              <Avatar nome={pessoa.nome} tamanho={38} />
+
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    fontWeight: 600,
+                    fontSize: 14,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {pessoa.nome}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    fontSize: 12,
+                    color: "var(--cor-texto-secundario)",
+                    marginTop: 2,
+                  }}
+                >
+                  <span>{pessoa.idade} anos</span>
+                  <span>·</span>
+                  <span>{idAbreviado(pessoa.id)}</span>
+                </div>
+              </div>
+
+              <button
+                title="Excluir"
+                onClick={() => onExcluir(pessoa)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "var(--cor-erro)",
+                  padding: 8,
+                  flexShrink: 0,
+                }}
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          ))}
+        </div>
       ) : (
         <table
           style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}

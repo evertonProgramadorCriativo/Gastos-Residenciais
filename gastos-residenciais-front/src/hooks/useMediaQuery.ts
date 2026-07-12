@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { QUERY_MOBILE_DOWN, QUERY_TABLET_DOWN } from "../lib/breakpoints";
+import {
+  QUERY_MOBILE_DOWN,
+  QUERY_TABELA_DOWN,
+  QUERY_TABLET_DOWN,
+} from "../lib/breakpoints";
 
 /**
  * Observa uma media query e retorna se ela está ativa no momento,
@@ -36,4 +40,9 @@ export function useEhTablet(): boolean {
 /** true para telas de celular (<= 480px). */
 export function useEhMobile(): boolean {
   return useMediaQuery(QUERY_MOBILE_DOWN);
+}
+
+/** true quando tabelas devem virar cards empilhados (<= 640px). */
+export function useEhTabela(): boolean {
+  return useMediaQuery(QUERY_TABELA_DOWN);
 }
