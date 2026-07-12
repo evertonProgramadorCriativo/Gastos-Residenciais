@@ -4,7 +4,6 @@ import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { BoasVindasModal } from "../../modals/BoasVindasModal";
 import { useAuth } from "../../contexts/AuthContext";
-
 export function AppLayout() {
   const { nomeUsuario, mostrarBoasVindas, fecharBoasVindas } = useAuth();
 

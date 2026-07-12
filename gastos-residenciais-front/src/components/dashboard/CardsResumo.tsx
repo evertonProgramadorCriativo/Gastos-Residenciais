@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { formatarMoeda } from "../../lib/formato";
 import { Users, ArrowLeftRight, TrendingDown, TrendingUp } from "lucide-react";
 import { useContadorAnimado } from "../../hooks/useContadorAnimado";
@@ -41,10 +41,10 @@ function Card({
         backgroundColor: "var(--cor-card-fundo)",
         border: "1px solid var(--cor-borda)",
         borderRadius: 12,
-        padding: 20,
-        flex: 1,
+        padding: "var(--espaco-card)",
         boxShadow: "var(--sombra-card)",
         animationDelay: `${atraso}ms`,
+        minWidth: 0,
       }}
     >
       <div
@@ -73,12 +73,23 @@ function Card({
             alignItems: "center",
             justifyContent: "center",
             fontSize: 14,
+            flexShrink: 0,
           }}
         >
           {icone}
         </span>
       </div>
-      <div style={{ fontSize: 26, fontWeight: 700, margin: "8px 0 4px" }}>
+      <div
+        style={{
+          fontSize: 26,
+          fontWeight: 700,
+          margin: "8px 0 4px",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+        title={valorExibido}
+      >
         {valorExibido}
       </div>
       <span style={{ fontSize: 12, color: "var(--cor-texto-secundario)" }}>
@@ -95,7 +106,17 @@ export function CardsResumo({
   totalReceitas,
 }: CardsResumoProps) {
   return (
-    <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
+    <div
+      style={{
+        display: "grid",
+        // Cada card tem no mínimo 170px; quantas colunas couberem na
+        // largura disponível são geradas automaticamente — sem media
+        // query e sem JS. Em telas de celular vira 1 ou 2 colunas sozinho.
+        gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+        gap: 16,
+        marginBottom: 24,
+      }}
+    >
       <Card
         titulo="PESSOAS"
         valor={totalPessoas}

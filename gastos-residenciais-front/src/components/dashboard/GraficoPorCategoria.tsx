@@ -47,11 +47,11 @@ export function GraficoPorCategoria({ transacoes }: GraficoPorCategoriaProps) {
         backgroundColor: "var(--cor-card-fundo)",
         border: "1px solid var(--cor-borda)",
         borderRadius: 12,
-        padding: 20,
-        flex: 1,
+        padding: "var(--espaco-card)",
         boxShadow: "var(--sombra-card)",
         display: "flex",
         flexDirection: "column",
+        height: "100%",
       }}
     >
       <h3 style={{ margin: "0 0 4px", fontSize: 16 }}>Por categoria</h3>

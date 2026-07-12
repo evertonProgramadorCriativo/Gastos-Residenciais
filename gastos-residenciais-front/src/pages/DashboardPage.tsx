@@ -6,6 +6,7 @@ import { CardsResumo } from "../components/dashboard/CardsResumo";
 import { GraficoGastosPorPessoa } from "../components/dashboard/GraficoGastosPorPessoa";
 import { GraficoPorCategoria } from "../components/dashboard/GraficoPorCategoria";
 import { UltimasTransacoes } from "../components/dashboard/UltimasTransacoes";
+import { useEhTablet } from "../hooks/useMediaQuery";
 import type { Pessoa } from "../types/pessoa";
 import type { Transacao } from "../types/transacao";
 import type { RelatorioTotais } from "../types/totais";
@@ -16,6 +17,9 @@ export function DashboardPage() {
   const [totais, setTotais] = useState<RelatorioTotais | null>(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
+
+  // Abaixo de 768px os dois gráficos empilham em vez de dividir a largura.
+  const ehTablet = useEhTablet();
 
   const carregar = useCallback(async () => {
     setCarregando(true);
@@ -63,15 +67,16 @@ export function DashboardPage() {
       <div
         style={{
           display: "flex",
+          flexDirection: ehTablet ? "column" : "row",
           gap: 16,
           marginBottom: 16,
           alignItems: "stretch",
         }}
       >
-        <div style={{ flex: 2 }}>
+        <div style={{ flex: ehTablet ? "unset" : 2, minWidth: 0 }}>
           <GraficoGastosPorPessoa dados={totais.pessoas} />
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: ehTablet ? "unset" : 1, minWidth: 0 }}>
           <GraficoPorCategoria transacoes={transacoes} />
         </div>
       </div>

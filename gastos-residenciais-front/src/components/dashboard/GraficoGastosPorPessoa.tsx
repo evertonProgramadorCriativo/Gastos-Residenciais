@@ -30,16 +30,18 @@ export function GraficoGastosPorPessoa({ dados }: GraficoGastosPorPessoaProps) {
         backgroundColor: "var(--cor-card-fundo)",
         border: "1px solid var(--cor-borda)",
         borderRadius: 12,
-        padding: 20,
-        flex: 1,
+        padding: "var(--espaco-card)",
         boxShadow: "var(--sombra-card)",
+        height: "100%",
       }}
     >
       <div
         style={{
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-between",
           alignItems: "flex-start",
+          gap: 8,
         }}
       >
         <div>
@@ -91,11 +93,14 @@ export function GraficoGastosPorPessoa({ dados }: GraficoGastosPorPessoaProps) {
           Sem movimentações ainda.
         </p>
       ) : (
+        // Em telas estreitas as barras continuam com o mesmo tamanho legível
+        // e a área rola horizontalmente — melhor que espremer os valores.
         <div
           style={{
             overflowX: "auto",
             overflowY: "hidden",
             marginTop: 20,
+            WebkitOverflowScrolling: "touch",
           }}
         >
           <div
