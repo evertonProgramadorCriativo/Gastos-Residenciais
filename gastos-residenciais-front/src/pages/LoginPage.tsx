@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
-import { authStorage } from "../lib/auth";
 import { Wallet } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 type Modo = "login" | "registrar";

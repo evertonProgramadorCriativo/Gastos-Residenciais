@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Anima um número, contando suavemente do valor anterior até `valorFinal`.
- * Usa requestAnimationFrame (sem libs externas) com easing "ease-out cubic".
- *
+
  * Sempre que `valorFinal` mudar (ex: nova transação alterou o total),
  * a animação recomeça do valor atualmente exibido até o novo valor.
  */
