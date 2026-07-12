@@ -21,7 +21,7 @@ export function Modal({ aberto, titulo, onFechar, children }: ModalProps) {
         alignItems: "center",
         justifyContent: "center",
         zIndex: 50,
-        padding: 6,
+        padding: "clamp(12px, 4vw, 16px)",
       }}
     >
       <div
@@ -29,9 +29,13 @@ export function Modal({ aberto, titulo, onFechar, children }: ModalProps) {
         style={{
           backgroundColor: "var(--cor-card-fundo)",
           borderRadius: 12,
-          padding: 24,
+          padding: "clamp(18px, 5vw, 24px)",
           width: "100%",
           maxWidth: 420,
+          // Em telas baixas (celular deitado, formulários longos) o conteúdo
+          // rola dentro do modal em vez de estourar a viewport.
+          maxHeight: "calc(100vh - 32px)",
+          overflowY: "auto",
           boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
         }}
       >

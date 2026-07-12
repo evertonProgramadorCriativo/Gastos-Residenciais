@@ -212,6 +212,107 @@ Se quiser, posso te mostrar como ficaria o SQL gerado (`CREATE TABLE ... REFEREN
 - `Transacoes` -> **o que** foi gasto/recebido, quando e por quem.
 - `Usuarios` -> **quem pode entrar** no sistema (não tem relação com o dinheiro em si).
 
+## Populando o banco com dados (Opcional)
+
+-- Usuário e banco de dados
+
+--  Criação de Tabelas
+-- Pessoas (moradores cadastrados no sistema)
+
+CREATE TABLE IF NOT EXISTS "Pessoas" (
+    "Id"    uuid NOT NULL PRIMARY KEY,
+    "Nome"  character varying(150) NOT NULL,
+    "Idade" integer NOT NULL
+);
+
+-- Usuários (login do sistema — senha sempre como hash, nunca texto puro)
+CREATE TABLE IF NOT EXISTS "Usuarios" (
+    "Id"        uuid NOT NULL PRIMARY KEY,
+    "Nome"      character varying(150) NOT NULL,
+    "Email"     character varying(200) NOT NULL,
+    "SenhaHash" text NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS "IX_Usuarios_Email" ON "Usuarios" ("Email");
+
+-- Transações (receitas e despesas, vinculadas a uma Pessoa)
+CREATE TABLE IF NOT EXISTS "Transacoes" (
+    "Id"        uuid NOT NULL PRIMARY KEY,
+    "Descricao" character varying(200) NOT NULL,
+    "Valor"     numeric(18,2) NOT NULL,
+    "Tipo"      text NOT NULL,                    -- 'Receita' ou 'Despesa'
+    "Categoria" text NOT NULL DEFAULT 'Outros',    -- ver lista de categorias abaixo
+    "Data"      timestamp with time zone NOT NULL,
+    "PessoaId"  uuid NOT NULL,
+    CONSTRAINT "FK_Transacoes_Pessoas_PessoaId"
+        FOREIGN KEY ("PessoaId") REFERENCES "Pessoas" ("Id") ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS "IX_Transacoes_PessoaId" ON "Transacoes" ("PessoaId");
+
+-- Valores válidos de "Tipo": Receita, Despesa
+-- Valores válidos de "Categoria": Alimentacao, Moradia, Transporte, Saude,
+--                                 Salario, Lazer, Educacao, Outros
+-- (esses textos precisam bater exatamente com os enums do backend em C#)
+
+
+ 
+-- Inserir Dados de exemplo (6 pessoas + 22 transações)
+-- 
+-- IDs fixos + ON CONFLICT DO NOTHING: rodar o script de novo não duplica nada.
+-- João Pedro (15 anos) só tem Despesas de propósito, pra ilustrar a regra
+-- de que menores de 18 anos não podem registrar Receita.
+
+INSERT INTO "Pessoas" ("Id", "Nome", "Idade") VALUES
+    ('11111111-1111-1111-1111-111111111101', 'Ana Beatriz Souza',       34),
+    ('11111111-1111-1111-1111-111111111102', 'Carlos Eduardo Lima',     41),
+    ('11111111-1111-1111-1111-111111111103', 'Mariana Ferreira Costa',  29),
+    ('11111111-1111-1111-1111-111111111104', 'João Pedro Santos',       15),
+    ('11111111-1111-1111-1111-111111111105', 'Beatriz Almeida Rocha',   38),
+    ('11111111-1111-1111-1111-111111111106', 'Rafael Oliveira Mendes',  45)
+ON CONFLICT ("Id") DO NOTHING;
+
+INSERT INTO "Transacoes" ("Id", "Descricao", "Valor", "Tipo", "Categoria", "Data", "PessoaId") VALUES
+    -- Salários do mês (Receita)
+    ('22222222-2222-2222-2222-222222222201', 'Salário',                          4500.00, 'Receita', 'Salario',     '2026-07-05 09:00:00', '11111111-1111-1111-1111-111111111101'),
+    ('22222222-2222-2222-2222-222222222202', 'Salário',                          6200.00, 'Receita', 'Salario',     '2026-07-05 09:00:00', '11111111-1111-1111-1111-111111111102'),
+    ('22222222-2222-2222-2222-222222222203', 'Salário',                          3800.00, 'Receita', 'Salario',     '2026-07-05 09:00:00', '11111111-1111-1111-1111-111111111103'),
+    ('22222222-2222-2222-2222-222222222204', 'Salário',                          5100.00, 'Receita', 'Salario',     '2026-07-05 09:00:00', '11111111-1111-1111-1111-111111111105'),
+    ('22222222-2222-2222-2222-222222222205', 'Salário',                          7300.00, 'Receita', 'Salario',     '2026-07-05 09:00:00', '11111111-1111-1111-1111-111111111106'),
+
+    -- Moradia (taxa de condomínio, contas fixas)
+    ('22222222-2222-2222-2222-222222222206', 'Taxa de condomínio',                850.00, 'Despesa', 'Moradia',     '2026-07-06 10:00:00', '11111111-1111-1111-1111-111111111101'),
+    ('22222222-2222-2222-2222-222222222207', 'Conta de luz',                      320.50, 'Despesa', 'Moradia',     '2026-07-08 10:00:00', '11111111-1111-1111-1111-111111111102'),
+    ('22222222-2222-2222-2222-222222222208', 'Conta de água',                     145.90, 'Despesa', 'Moradia',     '2026-07-08 11:00:00', '11111111-1111-1111-1111-111111111103'),
+    ('22222222-2222-2222-2222-222222222209', 'Internet e TV a cabo',              199.90, 'Despesa', 'Moradia',     '2026-07-09 08:30:00', '11111111-1111-1111-1111-111111111105'),
+    ('22222222-2222-2222-2222-222222222210', 'Manutenção do portão eletrônico',   180.00, 'Despesa', 'Outros',      '2026-06-25 14:00:00', '11111111-1111-1111-1111-111111111103'),
+
+    -- Alimentação
+    ('22222222-2222-2222-2222-222222222211', 'Mercado do mês',                   980.35, 'Despesa', 'Alimentacao', '2026-07-10 17:00:00', '11111111-1111-1111-1111-111111111106'),
+    ('22222222-2222-2222-2222-222222222212', 'Feira semanal',                    210.00, 'Despesa', 'Alimentacao', '2026-07-11 08:00:00', '11111111-1111-1111-1111-111111111101'),
+    ('22222222-2222-2222-2222-222222222213', 'Lanche na cantina',                 45.00, 'Despesa', 'Alimentacao', '2026-07-09 12:15:00', '11111111-1111-1111-1111-111111111104'),
+
+    -- Transporte
+    ('22222222-2222-2222-2222-222222222214', 'Combustível',                      380.00, 'Despesa', 'Transporte',  '2026-07-03 18:00:00', '11111111-1111-1111-1111-111111111102'),
+    ('22222222-2222-2222-2222-222222222215', 'Uber para o trabalho',              96.40, 'Despesa', 'Transporte',  '2026-07-04 07:45:00', '11111111-1111-1111-1111-111111111103'),
+
+    -- Saúde
+    ('22222222-2222-2222-2222-222222222216', 'Plano de saúde',                   640.00, 'Despesa', 'Saude',       '2026-07-02 09:00:00', '11111111-1111-1111-1111-111111111105'),
+    ('22222222-2222-2222-2222-222222222217', 'Farmácia',                          87.25, 'Despesa', 'Saude',       '2026-07-07 16:20:00', '11111111-1111-1111-1111-111111111106'),
+
+    -- Lazer
+    ('22222222-2222-2222-2222-222222222218', 'Cinema em família',                145.00, 'Despesa', 'Lazer',       '2026-06-28 20:00:00', '11111111-1111-1111-1111-111111111101'),
+    ('22222222-2222-2222-2222-222222222219', 'Streaming (Netflix + Spotify)',     64.80, 'Despesa', 'Lazer',       '2026-06-30 21:00:00', '11111111-1111-1111-1111-111111111102'),
+    ('22222222-2222-2222-2222-222222222220', 'Presente de aniversário',          120.00, 'Despesa', 'Outros',      '2026-06-20 15:00:00', '11111111-1111-1111-1111-111111111106'),
+
+    -- Educação (João Pedro, 15 anos — só despesas, nunca receita)
+    ('22222222-2222-2222-2222-222222222221', 'Material escolar',                 210.00, 'Despesa', 'Educacao',    '2026-07-01 09:00:00', '11111111-1111-1111-1111-111111111104'),
+    ('22222222-2222-2222-2222-222222222222', 'Mensalidade do curso de inglês',   350.00, 'Despesa', 'Educacao',    '2026-07-05 09:00:00', '11111111-1111-1111-1111-111111111104')
+ON CONFLICT ("Id") DO NOTHING;
+
+-- Confirmação no console ao final da execução.
+SELECT
+    (SELECT COUNT(*) FROM "Pessoas")    AS total_pessoas,
+    (SELECT COUNT(*) FROM "Transacoes") AS total_transacoes;
+
 ## Funcionalidades
 
 ### Backend

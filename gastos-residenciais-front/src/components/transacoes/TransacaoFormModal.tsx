@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Modal } from "../ui/Modal";
 import { CATEGORIA_LABEL } from "../../lib/categorias";
+import { useEhMobile } from "../../hooks/useMediaQuery";
 import type { Pessoa } from "../../types/pessoa";
 import type {
   CriarTransacaoInput,
@@ -30,6 +31,10 @@ export function TransacaoFormModal({
   const [pessoaId, setPessoaId] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+
+  // Abaixo de 480px, "Valor" e "Tipo" deixam de dividir a linha e
+  // empilham — evita dois campos apertados lado a lado num modal estreito.
+  const ehMobile = useEhMobile();
 
   const pessoaSelecionada = useMemo(
     () => pessoas.find((p) => p.id === pessoaId) ?? null,
@@ -133,7 +138,13 @@ export function TransacaoFormModal({
           />
         </div>
 
-        <div style={{ display: "flex", gap: 12 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: ehMobile ? "column" : "row",
+            gap: ehMobile ? 0 : 12,
+          }}
+        >
           <div style={{ ...estiloCampo, flex: 1 }}>
             <label htmlFor="valor" style={estiloLabel}>
               Valor
@@ -212,6 +223,7 @@ export function TransacaoFormModal({
         <div
           style={{
             display: "flex",
+            flexDirection: ehMobile ? "column-reverse" : "row",
             gap: 8,
             justifyContent: "flex-end",
             marginTop: 8,
@@ -221,11 +233,21 @@ export function TransacaoFormModal({
             type="button"
             onClick={handleFechar}
             disabled={enviando}
-            style={estiloBotaoSecundario}
+            style={{
+              ...estiloBotaoSecundario,
+              width: ehMobile ? "100%" : "auto",
+            }}
           >
             Cancelar
           </button>
-          <button type="submit" disabled={enviando} style={estiloBotaoPrimario}>
+          <button
+            type="submit"
+            disabled={enviando}
+            style={{
+              ...estiloBotaoPrimario,
+              width: ehMobile ? "100%" : "auto",
+            }}
+          >
             {enviando ? "Salvando..." : "Cadastrar"}
           </button>
         </div>
@@ -262,7 +284,7 @@ const estiloBotaoSecundario: React.CSSProperties = {
   padding: "10px 16px",
   backgroundColor: "transparent",
   border: "1px solid var(--cor-borda)",
-  borderRadius: "var(--raio-borda)",
   fontSize: 14,
   cursor: "pointer",
+  borderRadius: "var(--raio-borda)",
 };
