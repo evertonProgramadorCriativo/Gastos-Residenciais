@@ -1,3 +1,14 @@
+/*
+Camada de acesso ao localStorage para guardar a sessão do usuário logado
+ (token JWT e nome). 
+ 
+ Expõe o objeto authStorage com salvar/ , obterToken/ , obterNome/,limpar/
+  estaAutenticado.
+  
+  É consultado pelo lib/api.ts (para anexar o token nas requisições) e
+ pelo AuthContext (para inicializar e encerrar a sessão).
+*/
+
 const CHAVE_TOKEN = "gastos_residenciais_token";
 const CHAVE_NOME = "gastos_residenciais_nome";
 

@@ -1,3 +1,11 @@
+/**
+  Página de gerenciamento de pessoas efetivamente usada na rota /pessoas
+   Busca a lista via pessoasService, 
+   controla a abertura do modal de cadastro (PessoaFormModal) 
+   e do diálogo de exclusão (PessoaDeleteDialog), e
+  delega a listagem em si para PessoasTable.
+ */
+
 import { useEffect, useState, useCallback } from "react";
 import { pessoasService } from "../../services/pessoasService";
 import { PessoasTable } from "../pessoas/PessoasTable";

@@ -1,3 +1,12 @@
+/**
+ *
+ * Página de gerenciamento de pessoas (listar, criar, excluir),
+ *  buscando os dados via pessoasService e delegando a
+ *
+ * renderização para PessoasTable, PessoaFormModal e PessoaDeleteDialog.
+ *
+ */
+
 import { useEffect, useState, useCallback } from "react";
 import { pessoasService } from "../services/pessoasService";
 import { PessoasTable } from "../components/pessoas/PessoasTable";

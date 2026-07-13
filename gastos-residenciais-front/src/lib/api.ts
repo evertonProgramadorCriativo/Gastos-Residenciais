@@ -1,3 +1,21 @@
+/*
+Único arquivo do frontend que efetivamente 
+conversa com o backend via fetch.
+
+  Lê a URL base da API em VITE_API_URL, 
+  monta os headers padrão (incluindo o "Authorization: Bearer <token>" quando existir sessão) e expõe as funções genéricas
+
+
+ apiGet/ , apiPost/ , apiDelete usadas por
+  todos os services (authService, pessoasService,transacoesService, totaisService). 
+  
+  Centraliza também o tratamento de erros/401.
+ Caminho de uma requisição, conforme o README: 
+ 
+ Controller (backend) -> api.ts (fetch) -> service (rota) -> page (useEffect/useState) -> component (props/render).
+
+*/
+
 import { authStorage } from "./auth";
 /**
  * Client HTTP centralizado para comunicação com a API do backend.

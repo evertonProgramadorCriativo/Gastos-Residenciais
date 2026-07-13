@@ -1,3 +1,10 @@
+/*
+Diálogo de confirmação de exclusão de uma pessoa, 
+construído em cima do componente genérico Modal (src/components/ui/Modal.tsx). Só é renderizado quando a prop pessoa não é null; 
+
+ao confirmar, chama onConfirmar(pessoa.id).
+*/
+
 import { Modal } from "../ui/Modal";
 import type { Pessoa } from "../../types/pessoa";
 

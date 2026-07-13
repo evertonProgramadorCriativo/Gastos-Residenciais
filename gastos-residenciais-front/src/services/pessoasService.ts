@@ -1,3 +1,15 @@
+/**
+ *
+ * Camada fina de serviço para a entidade Pessoa.
+ *
+ * Centraliza as operações de listar, criar e deletar pessoas, cada uma delegando a chamada HTTP real para apiGet/ apiPost/ apiDelete (lib/api.ts).
+ *
+ *  É consumido pelas páginas
+ *
+ * (DashboardPage, PessoasPage, TransacoesPage)
+ * e pelo Header (na busca global).
+ */
+
 // Importa funções genéricas para realizar requisições HTTP para a API.
 // apiGet    -> faz requisições GET (buscar dados)
 // apiPost   -> faz requisições POST (criar dados)

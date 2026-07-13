@@ -1,3 +1,16 @@
+/*
+Componente de UI genérico e reutilizável de modal/diálogo
+ (overlay + caixa central + título + botão de fechar),
+ 
+ sem nenhuma regra de negócio. 
+
+ Serve de  base para PessoaFormModal, PessoaDeleteDialog, 
+ TransacaoFormModal e TransacaoDeleteDialog, 
+ 
+ que só passam o conteúdo (children)
+  e o comportamento específico.
+*/
+
 import type { ReactNode } from "react";
 
 interface ModalProps {

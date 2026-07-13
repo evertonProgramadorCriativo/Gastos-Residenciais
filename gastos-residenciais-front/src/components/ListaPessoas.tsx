@@ -1,3 +1,11 @@
+/* Lista simples (não paginada, sem busca) das pessoas cadastradas,
+
+ com botão de excluir por linha. 
+
+ Recebe os dados prontos via props (pessoas, onDeletar) 
+ 
+ */
+
 // Importa o tipo Pessoa.
 // Esse tipo define a estrutura de uma pessoa no sistema,
 // contendo propriedades como id, nome e idade.

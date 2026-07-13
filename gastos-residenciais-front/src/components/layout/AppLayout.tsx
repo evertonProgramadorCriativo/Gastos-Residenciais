@@ -1,3 +1,14 @@
+/*
+Layout compartilhado por todas as rotas autenticadas 
+(/dashboard, /pessoas, /transacoes). 
+
+Monta a estrutura Sidebar + Header + <Outlet />
+ (onde o React Router injeta a página atual), 
+ 
+ controla a abertura do menu lateral em telas pequenas e exibe
+ o BoasVindasModal quando o AuthContext sinaliza que ele deve aparecer.
+*/
+
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "./Sidebar";

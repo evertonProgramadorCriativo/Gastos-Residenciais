@@ -1,3 +1,11 @@
+/**
+  Componente simples que recebe um RelatorioTotais via props e 
+  
+  Desenha uma  tabela com o 
+  total de receitas/despesas/saldo por pessoa. 
+  
+*/
+
 import type { RelatorioTotais } from "../types/totais";
 import { formatarMoeda } from "../lib/formato";
 

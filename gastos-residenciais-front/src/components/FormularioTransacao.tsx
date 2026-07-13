@@ -1,8 +1,25 @@
+/**
+ *
+ * Formulário de cadastro de transação
+ * (descrição, valor, tipo, categoria, pessoa)
+ *
+ * Guarda os campos em useState e
+ * usa useMemo para algum cálculo derivado antes de chamar onCriar.
+ *
+ */
+
 // Importa hooks do React.
 // useState => guarda estados do componente (campos do formulário, erro, loading etc.)
 // useMemo => memoriza um cálculo para evitar refazer em toda renderização sem necessidade.
 import { useState, useMemo } from "react";
-import { ArrowLeftRight, User, FileText, DollarSign, AlertTriangle, Save } from "lucide-react";
+import {
+  ArrowLeftRight,
+  User,
+  FileText,
+  DollarSign,
+  AlertTriangle,
+  Save,
+} from "lucide-react";
 
 // Importa o tipo Pessoa.
 // Esse tipo representa os dados de uma pessoa vindos da API/front.

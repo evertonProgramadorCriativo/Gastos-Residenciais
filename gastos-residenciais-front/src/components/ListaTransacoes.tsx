@@ -1,3 +1,13 @@
+/*
+ Lista em tabela simples das transações,
+ com filtro por pessoa e cruzamento
+ com a lista de pessoas para exibir 
+
+ o nome de quem fez cada lançamento. 
+ Recebe tudo via props e 
+ não faz requisição própria.
+  */
+
 // Importa o tipo Pessoa.
 // Esse tipo representa os dados de uma pessoa, como id, nome e idade.
 import type { Pessoa } from "../types/pessoa";

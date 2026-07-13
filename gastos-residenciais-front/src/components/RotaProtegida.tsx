@@ -1,3 +1,9 @@
+/*
+Wrapper de rota que verifica, via useAuth(), 
+se o usuário está autenticado;
+ se não estiver, redireciona para /login com <Navigate>. 
+*/
+
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 

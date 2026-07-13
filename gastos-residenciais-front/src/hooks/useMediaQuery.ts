@@ -1,3 +1,16 @@
+/*
+ Hook customizado que observa uma media query CSS 
+
+ (ex.: "(max-width: 768px)")
+  e retorna um booleano indicando se ela está ativa, atualizando
+ automaticamente quando a janela é redimensionada. 
+ 
+ Usa as constantes definidas em
+  lib/breakpoints.ts para expor variantes 
+  prontas como hooks useEhTablet , hooks useEhMobile , hooks useEhTabela,
+
+  usadas em Sidebar, Header e nas tabelas para adaptar o layout a telas menores.
+*/
 import { useEffect, useState } from "react";
 import {
   QUERY_MOBILE_DOWN,

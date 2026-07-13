@@ -1,3 +1,20 @@
+/*
+Contexto React (createContext + AuthProvider) 
+
+responsável por guardar e expor o estado de autenticação em toda a aplicação: 
+
+nome do usuário logado, se está
+  autenticado, funções para iniciar (definirSessao) 
+  e encerrar (encerrarSessao) a sessão,
+
+
+ além do controle do modal de boas-vindas exibido após o login.
+ 
+ Usa authStorage
+  (lib/auth.ts) para persistir o token/nome no localStorage. 
+  Consumido via o hook useAuth() em LoginPage, Header, AppLayout e RotaProtegida.
+*/
+
 import {
   createContext,
   useContext,

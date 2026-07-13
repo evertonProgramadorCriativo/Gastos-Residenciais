@@ -1,3 +1,14 @@
+/*
+Menu lateral de navegação com os links para Dashboard, 
+Pessoas e Transações (usando NavLink para destacar a rota ativa).
+
+Em telas de tablet/mobile
+ funciona como um drawer que abre/fecha
+  (controlado pelo AppLayout via props
+ aberto/onFechar).
+
+*/
+
 import type { CSSProperties } from "react";
 import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";

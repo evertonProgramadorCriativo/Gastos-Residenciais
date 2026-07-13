@@ -1,3 +1,11 @@
+/*
+Diálogo de confirmação de exclusão de uma transação, 
+construído em cima do componente genérico Modal,
+
+ mostrando a descrição e o valor formatado
+  (formatarMoeda) do lançamento antes de confirmar a exclusão.
+*/
+
 import { Modal } from "../ui/Modal";
 import { formatarMoeda } from "../../lib/formato";
 import type { Transacao } from "../../types/transacao";

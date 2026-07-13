@@ -1,3 +1,13 @@
+/**
+ *
+ * Formulário simples (nome + idade)
+ * para cadastrar uma nova pessoa,
+ * usado na versão antiga do frontend (App.tsx).
+ *
+ *  Controla o próprio estado com
+ * useState e chama a função onCriar recebida via props ao submeter.
+ */
+
 // Importa o Hook useState do React.
 // O useState permite criar e gerenciar estados dentro de componentes funcionais.
 import { useState } from "react";

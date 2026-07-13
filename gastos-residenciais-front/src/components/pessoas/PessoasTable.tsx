@@ -1,3 +1,11 @@
+/*
+Tabela de pessoas cadastradas, 
+com campo de busca por nome (filtragem no próprio componente), 
+
+Avatar com iniciais, id abreviado e botão de excluir por linha.
+ Adapta-se a telas menores usando o hook useEhTabela.
+*/
+
 import { useState } from "react";
 import { Avatar } from "../ui/Avatar";
 import type { Pessoa } from "../../types/pessoa";

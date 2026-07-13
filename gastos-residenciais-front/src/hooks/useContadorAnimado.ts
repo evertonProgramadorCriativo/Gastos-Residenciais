@@ -1,3 +1,17 @@
+/*
+ Hook customizado que anima a transição de um número, 
+ contando suavemente do valor exibido anteriormente até valorFinal,
+  usando requestAnimationFrame e 
+  
+  um easing "ease-out cubic". 
+  Sempre que valorFinal muda (ex.: uma nova transação altera
+ o total), a animação recomeça do valor atual até o novo.
+ 
+ Usado nos cards e gráficos
+  do dashboard para dar a sensação de "contador subindo/descendo"
+  
+  */
+
 import { useEffect, useRef, useState } from "react";
 
 /**

@@ -1,3 +1,15 @@
+/*
+Modal de cadastro de nova transação (descrição, valor, tipo, categoria e
+  pessoa vinculada), 
+  
+  construído em cima do componente genérico Modal.
+  
+  Usa a lista de pessoas recebida via props para popular 
+  o seletor e os rótulos de categoria de
+  lib/categorias.ts. 
+  
+*/
+
 import { useState, useMemo } from "react";
 import { Modal } from "../ui/Modal";
 import { CATEGORIA_LABEL } from "../../lib/categorias";

@@ -1,3 +1,15 @@
+/**
+ * Página de login/registro (rota /login),
+ *
+ * fora do layout autenticado.
+ * Alterna entre os modos "login" e "registrar"
+ *
+ * com um único formulário, chama authService.login/registrar,
+ * e ao ter sucesso usa definirSessao (AuthContext)
+ *
+ * para salvar o token/nome e navega para a área interna da aplicação.
+ */
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";

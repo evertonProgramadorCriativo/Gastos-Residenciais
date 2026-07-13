@@ -1,3 +1,14 @@
+/*
+ Camada fina de serviço para autenticação. 
+ 
+ Só decide quais rotas chamar
+  (/auth/login e /auth/registrar),
+
+   delegando a chamada HTTP de fato para
+    apiPost (lib/api.ts). Usado pela LoginPage.
+
+*/
+
 import { apiPost } from "../lib/api";
 import type { LoginInput, RegistrarInput, AuthResposta } from "../types/auth";
 

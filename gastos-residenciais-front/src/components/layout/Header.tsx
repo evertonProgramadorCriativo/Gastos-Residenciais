@@ -1,3 +1,16 @@
+/*
+Cabeçalho fixo do layout autenticado. 
+
+Contém a busca global (que combinaas páginas fixas
+ do sistema com os nomes das pessoas cadastradas, 
+
+buscadas via pessoasService),
+
+o botão de abrir o menu em telas pequenas/tablet e o botão de logout
+  (via useAuth/encerrarSessao)
+
+*/
+
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";

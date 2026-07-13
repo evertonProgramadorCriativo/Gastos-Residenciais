@@ -1,3 +1,18 @@
+/*
+Tabela de transações, 
+com filtro por pessoa 
+
+(filtroPessoaId/onMudarFiltro,
+ sincronizado pela TransacoesPage com a URL),
+
+ badges de categoria coloridos, valores
+
+ formatados em moeda e botão de excluir por linha.
+   
+  Adapta-se a telas menores usando o hook useEhTabela.
+
+*/
+
 import type { Pessoa } from "../../types/pessoa";
 import type { Transacao } from "../../types/transacao";
 import { CATEGORIA_LABEL, CATEGORIA_COR } from "../../lib/categorias";

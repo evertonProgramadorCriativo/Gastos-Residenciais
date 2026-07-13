@@ -1,3 +1,11 @@
+/*
+Componente de UI genérico que desenha um "avatar"
+ circular com as iniciais do nome recebido, 
+ 
+ escolhendo a cor de fundo de forma determinística a partir da
+ primeira letra do nome (corPorNome). Usado nas tabelas de pessoas e transações.
+*/
+
 const CORES = [
   "#2563eb",
   "#16a34a",

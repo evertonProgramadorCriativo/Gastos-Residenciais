@@ -1,3 +1,15 @@
+/*
+ Modal de cadastro de nova pessoa (nome + idade), 
+ 
+ construído em cima do componente genérico Modal. 
+
+ Controla o próprio estado do formulário com useState e,
+ ao submeter, chama onCriar(dados) recebido via props.
+ 
+ É a versão atual (em modal) do
+  antigo FormularioPessoa.tsx.
+*/
+
 import { useState } from "react";
 import { Modal } from "../ui/Modal";
 import type { CriarPessoaInput } from "../../types/pessoa";

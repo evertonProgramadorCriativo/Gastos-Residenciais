@@ -1,3 +1,20 @@
+/**
+ * Página inicial do sistema (rota /dashboard).
+ *
+ *
+ * Dispara, dentro de um useEffect, as chamadas a pessoasService, transacoesService e totaisService em paralelo com Promise.all,
+ *
+ * guarda o resultado em useState e distribui os dados para
+ * os componentes visuais do dashboard:
+ *
+ *  CardsResumo, GraficoGastosPorPessoa,
+ * GraficoPorCategoria e UltimasTransacoes.
+ *
+ *  Também usa useEhTablet para decidir se os
+ * dois gráficos ficam lado a lado ou empilhados.
+ *
+ */
+
 import { useEffect, useState, useCallback } from "react";
 import { pessoasService } from "../services/pessoasService";
 import { transacoesService } from "../services/transacoesService";

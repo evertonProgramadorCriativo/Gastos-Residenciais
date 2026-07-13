@@ -1,3 +1,13 @@
+/*
+Página de gerenciamento de transações (rota /transacoes). 
+
+Busca pessoas e transações via services, sincroniza o filtro por pessoa 
+
+com o parâmetro ?pessoaId= da  URL (useSearchParams) e
+ delega a renderização para TransacoesTable, TransacaoFormModal
+ e TransacaoDeleteDialog.
+*/
+
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { pessoasService } from "../services/pessoasService";
