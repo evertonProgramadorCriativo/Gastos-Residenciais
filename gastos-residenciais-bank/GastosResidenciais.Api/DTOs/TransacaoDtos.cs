@@ -1,3 +1,22 @@
+/* 
+EXPLICAÇÃO DOS DTOs
+
+DOTS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
+
+
+DTOs de entrada/saída da entidade Transacao.
+
+ CriarTransacaoDto molda os dados exigidos para criar uma transação 
+ (validações [Required],
+ [MaxLength], [Range]);
+ 
+TransacaoRespostaDto molda o que a API  devolve ao cliente. 
+
+TransacaoMappingExtensions traz os métodos de
+ conversão DTO <-> Domain (ParaEntidade()/ParaDto()) 
+usados pelo TransacoesController.
+*/
+
 // Importa atributos de validação do .NET.
 
 // Esses atributos são utilizados para validar automaticamente

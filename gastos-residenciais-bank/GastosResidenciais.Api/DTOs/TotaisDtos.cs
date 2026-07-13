@@ -1,3 +1,21 @@
+/*
+EXPLICAÇÃO DOS DTOs
+
+DOTS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
+
+ DTOs de saída do relatório de totais, devolvidos pelo
+ TotaisController na rota GET /totais. 
+ 
+ TotalPorPessoaDto representa
+ os totais individuais de cada pessoa;
+ 
+  TotalGeralDto representa a
+ soma consolidada da residência;
+ 
+  RelatorioTotaisDto é o envelope que
+ agrupa os dois. Espelham exatamente os tipos types/totais.ts do frontend.
+*/
+
 namespace GastosResidenciais.Api.DTOs;
 
 // <summary>Totais de receitas, despesas e saldo de uma pessoa específica.</summary>

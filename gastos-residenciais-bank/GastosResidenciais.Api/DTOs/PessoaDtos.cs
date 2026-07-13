@@ -1,3 +1,21 @@
+/*
+EXPLICAÇÃO DOS DTOs
+
+DOTS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
+
+ DTOs de entrada/saída da entidade Pessoa.
+  CriarPessoaDto molda os dados exigidos para 
+  
+  cadastrar uma pessoa (com validações [Required], [MaxLength], [Range]); PessoaRespostaDto molda o que a
+ API devolve ao cliente. 
+ 
+ PessoaMappingExtensions traz os
+  métodos de conversão DTO <-> Domain 
+  
+  (ParaEntidade()/ParaDto()) usados pelo
+ PessoasController, evitando expor a entidade do EF Core diretamente.
+*/
+
 // Importa os atributos de validação como [Required], [MaxLength] e [Range].
 // Esses atributos são usados para validar os dados recebidos pela API.
 using System.ComponentModel.DataAnnotations;

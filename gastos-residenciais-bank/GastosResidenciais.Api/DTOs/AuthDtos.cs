@@ -1,3 +1,17 @@
+/*
+
+EXPLICAÇÃO DOS DTOs
+
+DOTS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
+
+ DTOs (Data Transfer Objects) de entrada e saída da autenticação.
+ RegistrarUsuarioDto e LoginDto moldam o corpo esperado pelas rotas
+ POST /auth/registrar e /auth/login (com validações via
+ DataAnnotations: [Required], [EmailAddress], [MinLength]);
+ AuthRespostaDto molda o que a API devolve ao cliente (token JWT,
+ nome e e-mail). Usados pelo AuthController.
+*/
+
 using System.ComponentModel.DataAnnotations;
 
 namespace GastosResidenciais.Api.DTOs;
