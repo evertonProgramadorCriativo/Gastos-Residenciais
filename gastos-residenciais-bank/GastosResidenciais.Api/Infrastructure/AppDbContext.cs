@@ -1,4 +1,23 @@
 
+/*
+ Contexto do Entity Framework Core (DbContext) 
+
+  a "porta de entrada" para o PostgreSQL, 
+  injetada em todos os Controllers via _context.
+ 
+  Expõe um DbSet<T> para cada entidade
+   (Pessoas, Transacoes, Usuarios) e, 
+   em OnModelCreating, define as regras finas de
+
+ mapeamento: 
+ tamanho máximo de texto, obrigatoriedade, enums salvos
+ como texto (Tipo/Categoria),
+ 
+  exclusão em cascata (Transacao ->
+ Pessoa) e índice único de e-mail (Usuario).
+
+*/
+
 // Importa o namespace onde está a entidade Pessoa.
 // Essa classe representa a tabela/objeto de domínio que será salva no banco.
 using GastosResidenciais.Api.Domain;

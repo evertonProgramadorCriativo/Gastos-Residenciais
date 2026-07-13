@@ -1,3 +1,18 @@
+/*
+ Serviço de infraestrutura responsável
+ 
+por gerar o token JWT assinado após 
+um login/registro bem-sucedido (chamado pelo AuthController). 
+ 
+ Lê a chave secreta, emissor, audiência e tempo de
+ expiração da configuração (appsettings.json),
+ 
+  monta as claims do usuário (Sub, Email, Nome)
+ 
+  e devolve o token pronto para ser
+ enviado ao frontend, que o guarda via lib/auth.ts.
+*/
+
 // Biblioteca responsável por criar, ler e manipular tokens JWT.
 using System.IdentityModel.Tokens.Jwt;
 
