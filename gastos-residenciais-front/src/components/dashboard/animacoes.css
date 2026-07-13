@@ -33,7 +33,7 @@
 }
 
 .dashboard-card-anim {
-  animation: dashboard-fade-subir 0.5s ease both;
+  animation: dashboard-fade-subir 0.8s ease both;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -58,5 +58,5 @@
 }
 
 .dashboard-linha-anim {
-  animation: dashboard-fade-subir 0.4s ease both;
+  animation: dashboard-fade-subir 0.8s ease both;
 }

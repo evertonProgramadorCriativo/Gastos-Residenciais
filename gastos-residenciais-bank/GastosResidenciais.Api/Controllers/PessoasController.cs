@@ -1,3 +1,27 @@
+/*
+ Controller responsável pela entidade Pessoa. 
+ Expõe as rotas
+
+ POST /pessoas, 
+ GET /pessoas, 
+ GET /pessoas/{id} 
+ e 
+ DELETE /pessoas/{id}.
+
+ Protegido por [Authorize] (exige JWT válido).
+ 
+  Recebe DTOs
+ (CriarPessoaDto),
+  converte para a entidade Domain via ParaEntidade(),
+ usa o AppDbContext (_context) para consultar/gravar no 
+ 
+ banco e devolve PessoaRespostaDto via ParaDto().
+ 
+  É o controller consumido
+ pelo services/pessoasService.ts do frontend.
+*/
+
+
 // Importa os DTOs usados na entrada e saída da API.
 // Exemplo: CriarPessoaDto e PessoaRespostaDto.
 using GastosResidenciais.Api.DTOs;

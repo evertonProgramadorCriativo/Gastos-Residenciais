@@ -1,3 +1,22 @@
+/*
+
+ Controller de autenticação (ASP.NET Core). 
+ 
+ Expõe as rotas públicas
+
+ POST /auth/registrar 
+ e POST /auth/login.
+ 
+  Usa PasswordHasher para
+ gerar/verificar o hash da senha (nunca salva senha em texto puro)
+ 
+ e JwtTokenGenerator (Infrastructure) para emitir o token JWT que o
+ frontend guarda em localStorage (lib/auth.ts) e envia em toda
+ requisição via header Authorization: Bearer <token>.
+
+*/
+
+
 // Importa a entidade Usuario e outras entidades do domínio da aplicação.
 using GastosResidenciais.Api.Domain;
 

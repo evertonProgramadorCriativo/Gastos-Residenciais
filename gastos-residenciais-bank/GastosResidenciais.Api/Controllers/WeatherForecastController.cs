@@ -1,3 +1,14 @@
+/*
+ Controller de exemplo gerado automaticamente pelo template padrão
+ do ASP.NET Core ao criar o projeto (dotnet new webapi).
+ 
+Não faz parte das regras de negócio do sistema de Gastos Residenciais;
+
+ serve apenas como referência/placeholder e pode ser removido com
+ segurança (junto com WeatherForecast.cs).
+
+*/
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace GastosResidenciais.Api.Controllers;

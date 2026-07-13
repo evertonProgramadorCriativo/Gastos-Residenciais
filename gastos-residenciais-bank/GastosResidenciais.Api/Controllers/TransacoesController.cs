@@ -1,3 +1,20 @@
+/* 
+Controller responsável pela entidade Transacao. 
+
+Expõe GET /transacoes,
+ GET /pessoas/{pessoaId}/transacoes, 
+ POST /transacoes e
+ DELETE /transacoes/{id},
+todas protegidas por [Authorize]. 
+  
+Valida se a pessoa informada existe antes de criar uma transação, 
+converte DTOs em entidade via ParaEntidade()/ParaDto()
+e usa o AppDbContext para acessar o banco.
+
+ É o controller consumido pelo
+ services/transacoesService.ts do frontend.
+ 
+ */
 using GastosResidenciais.Api.DTOs;
 using GastosResidenciais.Api.Infrastructure;
 using Microsoft.AspNetCore.Mvc;

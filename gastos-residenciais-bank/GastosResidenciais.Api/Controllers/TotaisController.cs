@@ -1,3 +1,18 @@
+/*
+ Controller responsável pelo relatório consolidado de totais.
+
+ Expõe GET /totais (protegido por [Authorize]),
+ 
+que busca todas as pessoas e transações no AppDbContext e
+ calcula em memória (não em SQL) 
+ 
+ o total de receitas/despesas/saldo de cada pessoa,
+além do total geral da residência. 
+
+É o controller consumido pelo services/totaisService.ts
+ do frontend (usado no Dashboard).
+*/
+
 using GastosResidenciais.Api.Domain;
 using GastosResidenciais.Api.DTOs;
 using GastosResidenciais.Api.Infrastructure;

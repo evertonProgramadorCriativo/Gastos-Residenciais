@@ -1,3 +1,17 @@
+/*
+ Controller utilitário de infraestrutura, sem relação com as regras
+ de negócio do sistema. 
+
+ Expõe GET /health/db, 
+ 
+ que apenas verifica se
+ a API consegue abrir uma conexão real com o PostgreSQL via
+ AppDbContext 
+ 
+ Isso é útil para checar se o container do banco subiu
+ corretamente (ex.: depois de "docker compose up").
+*/
+
 using GastosResidenciais.Api.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
