@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Migration gerada automaticamente pelo EF Core: primeiro "commit" do
+// histórico do banco, criando a tabela Pessoas. Up() descreve o
+// CREATE TABLE equivalente; Down() descreve como desfazer. Não deve
+// ser editada manualmente — para alterar o schema, crie uma nova
+// migration com "dotnet ef migrations add".
+
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable

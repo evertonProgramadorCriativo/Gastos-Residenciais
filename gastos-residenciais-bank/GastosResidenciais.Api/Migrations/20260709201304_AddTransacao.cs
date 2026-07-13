@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Migration gerada automaticamente pelo EF Core: cria a tabela
+// Transacoes, incluindo a FK para Pessoas e a regra de exclusão em
+// cascata. Reflete o estado da entidade Transacao (Domain) e do
+// mapeamento definido em AppDbContext no momento em que foi gerada.
+
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable

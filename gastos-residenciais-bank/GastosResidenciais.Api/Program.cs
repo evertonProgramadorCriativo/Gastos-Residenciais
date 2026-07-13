@@ -1,3 +1,18 @@
+/*
+ Ponto de entrada principal da API
+
+ Usa WebApplication.CreateBuilder para registrar todos os
+ serviços necessários
+ 
+  (Controllers, Swagger, AppDbContext/PostgreSQL,
+ JwtTokenGenerator, autenticação JWT, autorização, CORS liberado
+ para o frontend em localhost:5173/3000)
+ 
+  e, em seguida, monta o
+ pipeline de middlewares na ordem correta 
+ (UseCors -> UseAuthentication -> UseAuthorization -> MapControllers) antes de subir o servidor com app.Run().
+*/
+
 // Biblioteca utilizada para converter strings em bytes UTF8.
 // Será usada para transformar a chave secreta JWT em bytes.
 using System.Text;
