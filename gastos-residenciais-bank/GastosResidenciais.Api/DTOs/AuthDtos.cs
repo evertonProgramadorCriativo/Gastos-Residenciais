@@ -2,7 +2,7 @@
 
 EXPLICAÇÃO DOS DTOs
 
-DOTS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
+DTOS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
 
  DTOs (Data Transfer Objects) de entrada e saída da autenticação.
  RegistrarUsuarioDto e LoginDto moldam o corpo esperado pelas rotas

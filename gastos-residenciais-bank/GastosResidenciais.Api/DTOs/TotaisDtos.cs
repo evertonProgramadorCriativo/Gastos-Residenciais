@@ -1,7 +1,7 @@
 /*
 EXPLICAÇÃO DOS DTOs
 
-DOTS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
+DTOS = Objetos de entrada/saída da API (não vão para o banco, servem para validar e formatar dados trocados com o front)
 
  DTOs de saída do relatório de totais, devolvidos pelo
  TotaisController na rota GET /totais. 
