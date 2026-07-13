@@ -4,6 +4,13 @@ import "./animacoes.css";
 interface GraficoGastosPorPessoaProps {
   dados: TotalPorPessoa[];
 }
+/*
+ Gráfico de barras comparando receitas x despesas de cada pessoa,
+ calculando a proporção de cada barra a
+ partir do maior valor entre todas as pessoas. 
+ Recebe a lista de TotalPorPessoa via props.
+
+*/
 
 const formatarMoedaCompacta = (valor: number) =>
   valor.toLocaleString("pt-BR", {

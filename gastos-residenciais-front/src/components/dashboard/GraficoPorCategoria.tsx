@@ -1,3 +1,7 @@
+/*
+
+*/
+
 import type { Transacao } from "../../types/transacao";
 import { CATEGORIA_LABEL, CATEGORIA_COR } from "../../lib/categorias";
 import { formatarMoeda } from "../../lib/formato";

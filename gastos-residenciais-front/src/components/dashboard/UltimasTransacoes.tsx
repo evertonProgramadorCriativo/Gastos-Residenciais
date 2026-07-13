@@ -1,3 +1,10 @@
+/*
+Lista as 5 transações mais recentes no dashboard,
+ordenando a lista recebida via props por data (mais nova primeiro)
+ e cruzando com a lista de pessoas
+para mostrar o nome de quem fez cada lançamento.
+*/
+
 import type { Transacao } from "../../types/transacao";
 import type { Pessoa } from "../../types/pessoa";
 import { CATEGORIA_LABEL } from "../../lib/categorias";

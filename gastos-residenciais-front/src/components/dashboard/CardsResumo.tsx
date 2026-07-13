@@ -3,7 +3,13 @@ import { formatarMoeda } from "../../lib/formato";
 import { Users, ArrowLeftRight, TrendingDown, TrendingUp } from "lucide-react";
 import { useContadorAnimado } from "../../hooks/useContadorAnimado";
 import "./animacoes.css";
+/*
+  Renderiza os quatro cards de resumo no topo do dashboard (total de
+  pessoas, total de transações, total de despesas e total de receitas), 
+  
+  cada um com ícone (lucide-react) e valor animado via useContadorAnimado. Recebe os totais prontos via props, sem fazer chamadas de rede.
 
+*/
 interface CardsResumoProps {
   totalPessoas: number;
   totalTransacoes: number;
