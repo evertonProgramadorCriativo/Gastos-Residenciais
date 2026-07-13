@@ -1,4 +1,21 @@
+// Explicação Conceitos Geral Conversa Backend e Front end
+/*
+ Entidade (enum) do domínio:
+  define o conjunto fixo de categorias possíveis para uma transação 
+  
+  (Alimentacao, Moradia, Transporte,
+ Saude, Salario, Lazer, Educacao, Outros).
+ 
+  É salvo no banco como
+ texto (ver AppDbContext.OnModelCreating) e usado pelo dashboard
+ (gráfico "Por categoria") 
+ 
+ tanto no backend quanto no frontend
+ (lib/categorias.ts espelha esses mesmos valores).
+*/
+
 namespace GastosResidenciais.Api.Domain;
+// Explicação Macro 
 
 // <summary>
 // Entidades (Entities) representam os objetos do domínio da aplicação.

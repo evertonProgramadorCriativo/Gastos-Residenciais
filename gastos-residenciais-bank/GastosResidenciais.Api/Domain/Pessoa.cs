@@ -1,3 +1,13 @@
+/*
+ Entidade de domínio que representa uma pessoa cadastrada no sistema
+ 
+ (o "esqueleto" da tabela Pessoas em memória, mapeado pelo EF Core
+ via AppDbContext).
+ 
+  O Id é gerado como Guid no próprio C#, sem
+ depender de sequência do banco. Espelhada no frontend por types/pessoa.ts.
+*/
+
 namespace GastosResidenciais.Api.Domain;
 
 // <summary>

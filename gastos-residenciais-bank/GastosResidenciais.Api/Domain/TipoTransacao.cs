@@ -1,3 +1,11 @@
+// Entidade (enum) do domínio: define os dois valores possíveis para o
+// tipo de uma transação, Receita (0) ou Despesa (1). Usar enum em vez
+// de string evita erros de digitação e deixa explícito, tanto no
+// código quanto no banco (salvo como texto via HasConversion<string>),
+// que só esses dois valores são válidos. Espelhado no frontend por
+// types/transacao.ts (TipoTransacao).
+
+
 // Define que esta classe faz parte do namespace Domain.
 
 // O namespace serve para organizar o código em grupos lógicos,

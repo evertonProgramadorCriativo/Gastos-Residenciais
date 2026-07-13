@@ -1,10 +1,19 @@
+/*
+
+ Entidade de domínio que representa um usuário com acesso ao
+ sistema (login). 
+ 
+ Guarda o e-mail e o hash da senha (SenhaHash,
+ nunca a senha em texto puro), gerado pelo AuthController via
+ PasswordHasher.
+ 
+  É a entidade central usada por AuthController e
+ JwtTokenGenerator para autenticação.
+// */
+
 namespace GastosResidenciais.Api.Domain;
 
-// <summary>
-// Representa um usuário com acesso ao sistema.
-// O Id é gerado automaticamente (Guid), garantindo unicidade sem
-// depender de sequência incremental do banco.
-// </summary>
+
 public class Usuario
 {
     public Guid Id { get; set; } = Guid.NewGuid();
